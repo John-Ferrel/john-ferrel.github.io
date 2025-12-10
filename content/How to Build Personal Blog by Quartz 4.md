@@ -10,23 +10,23 @@ modified: 2025-12-10 21:05
 Quartz 4 is so brilliant to build personal blog easily.
 You can follow me to set the most useful and simplest blog, or go with [Welcome to Quartz 4](https://quartz.jzhao.xyz/) for more details.
 
-## 0. Before Start
+## 0. Before You Start
 You need
 1. Github account (Free!)
 2. A computer
 3. Network(Maybe VPN is necessary)
-4. [Obsisian]([Obsidian - Sharpen your thinking](https://obsidian.md/))(Optional, but I think it's the best note editor)
+4. [Obsidian](https://obsidian.md/) (Optional, but I think it's the best note editor)
 
-Have a look to my blog: [Welcome to Sisyphus Mountain](https://sisyphus-mountain.github.io/)
+Have a look to my blog: [Welcome to John Ferrel Blog](https://john-ferrel.github.io/)
 
-## 1. Set Environment
+## 1. Set Up Environment
 ## git
 https://git-scm.com/install/windows
 
 ## Node.js
 [Node.js — Download Node.js®](https://nodejs.org/zh-cn/download)
 Get a prebuilt Node.js for Windows is enough.
-
+![[Pasted image 20251210225315.png]]
 ## Validate Installation
 Open PowerShell or CMD:
 ```bash
@@ -35,9 +35,9 @@ node --version
 npm --version
 ```
 
-## 2. Set Quartz
+## 2. Set Up Quartz
 
-Select a parent folder you like,  and click right to open Terminal.
+Select a parent folder you like,  and right-click and select "Open in Terminal" or "Open PowerShell here".
 Then,
 ```bash
 git clone https://github.com/jackyzha0/quartz.git
@@ -52,7 +52,7 @@ Now, we are at `/quartz`, enter the sub folder `/content`, and you can see `/con
 
 It's very recommended that you use Obsidian and set the folder `/content` as your vault.
 
-## 3. Write Your First Blog
+## 3. Write Your First Post
 
 ```md
 ---
@@ -65,7 +65,7 @@ tags:
 The rest of your content lives here. You can use **Markdown** here :)
 
 ```
-## 4. Build and Preview
+## 4. Build and Preview Locally
 
 Open `/quartz/quartz.config.ts`,
 edit `pageTitle: "Quartz 4"` to `pageTitle: "<Your Blog Name>"`
@@ -78,15 +78,15 @@ npx quartz build --serve
 
 Open a web browser and visit `http://localhost:8080/` to view it.
 
-## 5. Set Github Repository
+## 5. Set Up Github Repository
 
 Create a new repository on GitHub.com. Do **not** initialize the new repository with `README`, license, or `gitignore` files.
 
 For a shorter domain, name the repository as `<username>.github.io`, which will be your Blog domain name.
 
-Copy the remote repository URL, like `https://github.com/<username>/<username>.github.io.git`, which is `REMOTE_URL`.
+Copy the remote repository URL, like `https://github.com/<username>/<username>.github.io.git`, which we'll call `REMOTE_URL`.
 
-Run several command at `/quartz`
+Run the following commands in the `/quartz` directory,
 
 ```bash
 git remote -v
@@ -100,9 +100,9 @@ Upload your repository,
 npx quartz sync --no-pull
 ```
 
-## 6. Hosting
+## 6. Hosting on GitHub Pages
 
-In your local Quartz, create a new file `quartz/.github/workflows/deploy.yml`.
+In your local Quartz directory, create a new file `quartz/.github/workflows/deploy.yml`.
 
 ```yml
 name: Deploy Quartz site to GitHub Pages
@@ -154,7 +154,7 @@ jobs:
 
 Then,
 
-1. Head to “**Settings**” tab of your forked repository and in the sidebar, click “**Pages**”. Under “**Source**”, select “**GitHub Actions**”.
+1. Head to “**Settings**” tab of your own repository and in the sidebar, click “**Pages**”. Under “**Source**”, select “**GitHub Actions**”.
 2. Run command  at `/quartz` to commit:
 
 ```bash
@@ -168,14 +168,16 @@ This should deploy your site to `<username>.github.io`.
 ### Install giscus
 [GitHub Apps - giscus](https://github.com/apps/giscus)
 
-Install for selected repositories `<username.github.io`.
+Install it for selected repositories `<username.github.io`.
 
 Head to “**Settings**” tab of your forked repository and Scroll down to the "**Features**" section and select **Discussions**.
 
-Open [giscus](https://giscus.app/zh-CN) and Input `<username>/<username>`
+Open [giscus](https://giscus.app/zh-CN) and Enter `<username>/<username>`
 Make sure you select `Announcements` for the Discussion category.
+![[Pasted image 20251210225625.png]]
+![[Pasted image 20251210230004.png]]
 
-Then, you will see your arguments of repo discussion,
+Then, you will see your arguments of your repository discussion,
 
 ```html
 <script src="https://giscus.app/client.js"
@@ -196,7 +198,7 @@ Then, you will see your arguments of repo discussion,
 ```
 
 
-Open `quartz/quartz.layout.ts`, and edit
+Open local `quartz/quartz.layout.ts`, and edit
 ```ts
 afterBody: [
   Component.Comments({
@@ -217,3 +219,7 @@ afterBody: [
 ],
 ```
 
+Sync:
+```bash
+npx quartz sync
+```
