@@ -7,27 +7,28 @@ tags:
 created: 2025-12-09 23:40
 modified: 2025-12-10 21:05
 ---
-Quartz 4 is so brilliant to build personal blog easily.
-You can follow me to set the most useful and simplest blog, or go with [Welcome to Quartz 4](https://quartz.jzhao.xyz/) for more details.
+Ready to start a blog with ease? 
+Quartz 4 is the perfect tool for the job! Follow my step-by-step tutorial to build your own, or dive into the [Welcome to Quartz 4](https://quartz.jzhao.xyz/) documentation for even more features.
 
 ## 0. Before You Start
-You need
-1. Github account (Free!)
+You will need
+1. A GitHub account
 2. A computer
-3. Network(Maybe VPN is necessary)
-4. [Obsidian](https://obsidian.md/) (Optional, but I think it's the best note editor)
+3. Network(a VPN may be required)
+4. [Obsidian](https://obsidian.md/) (Optional, but highly recommended for the best editing experience)
 
-Have a look to my blog: [Welcome to John Ferrel Blog](https://john-ferrel.github.io/)
+Have a look at my blog: [Welcome to John Ferrel Blog](https://john-ferrel.github.io/)
 
 ## 1. Set Up Environment
-## git
+### Install Git
+
 https://git-scm.com/install/windows
 
-## Node.js
+### Install Node.js
 [Node.js — Download Node.js®](https://nodejs.org/zh-cn/download)
-Get a prebuilt Node.js for Windows is enough.
+For Windows, simply download the prebuilt installer.
 ![[Pasted image 20251210225315.png]]
-## Validate Installation
+### Validate Installation
 Open PowerShell or CMD:
 ```bash
 git --version
@@ -37,7 +38,7 @@ npm --version
 
 ## 2. Set Up Quartz
 
-Select a parent folder you like,  and right-click and select "Open in Terminal" or "Open PowerShell here".
+Choose a directory where you want to create your blog,  and right-click and select "Open in Terminal" or "Open PowerShell here".
 Then,
 ```bash
 git clone https://github.com/jackyzha0/quartz.git
@@ -46,11 +47,13 @@ npm i
 npx quartz create
 ```
 
-Select `Empty Quartz`, `Shortest path(default)`.
+When prompted, select `Empty Quartz`, `Shortest path(default)`.
 
-Now, we are at `/quartz`, enter the sub folder `/content`, and you can see `/content/index.md`, which is the home page.
+Now, we are at the root path of quartz, which will be the default path in this tutorial.
 
-It's very recommended that you use Obsidian and set the folder `/content` as your vault.
+Enter the sub folder `content`, and you will find `index.md`, which is the home page.
+
+It's highly recommended to use Obsidian and set the folder `content` as your vault.
 
 ## 3. Write Your First Post
 
@@ -67,10 +70,9 @@ The rest of your content lives here. You can use **Markdown** here :)
 ```
 ## 4. Build and Preview Locally
 
-Open `/quartz/quartz.config.ts`,
-edit `pageTitle: "Quartz 4"` to `pageTitle: "<Your Blog Name>"`
+Open `quartz.config.ts` and change the `pageTitle` from `pageTitle: "Quartz 4"` to `pageTitle: "<Your Blog Name>"`.
 
-Run the command at `/quartz` to build Blog locally.
+Run the command to build Blog locally
 
 ```bash
 npx quartz build --serve
@@ -78,15 +80,15 @@ npx quartz build --serve
 
 Open a web browser and visit `http://localhost:8080/` to view it.
 
-## 5. Set Up Github Repository
+## 5. Set Up GitHub Repository
 
 Create a new repository on GitHub.com. Do **not** initialize the new repository with `README`, license, or `gitignore` files.
-
+![[Pasted image 20251211205415.png]]
 For a shorter domain, name the repository as `<username>.github.io`, which will be your Blog domain name.
 
 Copy the remote repository URL, like `https://github.com/<username>/<username>.github.io.git`, which we'll call `REMOTE_URL`.
 
-Run the following commands in the `/quartz` directory,
+Run the following commands in the root of your Quartz directory
 
 ```bash
 git remote -v
@@ -102,7 +104,7 @@ npx quartz sync --no-pull
 
 ## 6. Hosting on GitHub Pages
 
-In your local Quartz directory, create a new file `quartz/.github/workflows/deploy.yml`.
+In the root of your Quartz directory, create a new file at `.github/workflows/deploy.yml`.
 
 ```yml
 name: Deploy Quartz site to GitHub Pages
@@ -155,7 +157,7 @@ jobs:
 Then,
 
 1. Head to “**Settings**” tab of your own repository and in the sidebar, click “**Pages**”. Under “**Source**”, select “**GitHub Actions**”.
-2. Run command  at `/quartz` to commit:
+2. Run the following command to commit your changes:
 
 ```bash
 npx quartz sync
@@ -168,23 +170,23 @@ This should deploy your site to `<username>.github.io`.
 ### Install giscus
 [GitHub Apps - giscus](https://github.com/apps/giscus)
 
-Install it for selected repositories `<username.github.io`.
+Install it for your blog repository `<username.github.io`.
 
-Head to “**Settings**” tab of your forked repository and Scroll down to the "**Features**" section and select **Discussions**.
+Head to “**Settings**” tab of your blog repository, scroll down to the "**Features**" section and select **Discussions**.
 
-Open [giscus](https://giscus.app/zh-CN) and Enter `<username>/<username>`
-Make sure you select `Announcements` for the Discussion category.
+Open [giscus](https://giscus.app/zh-CN) and Enter `<username>/<repository-name>`, e.g.,
 ![[Pasted image 20251210225625.png]]
+Make sure you select `Announcements` for the Discussion category.
 ![[Pasted image 20251210230004.png]]
 
-Then, you will see your arguments of your repository discussion,
+Giscus will then provide you with a block of configuration code:
 
 ```html
 <script src="https://giscus.app/client.js"
         data-repo="john-ferrel/john-ferrel.github.io"
-        data-repo-id="R_kgDOQmNBbA"
+        data-repo-id="R_kgDOQmdsNBbA"
         data-category="Announcements"
-        data-category-id="DIC_kwDOQmNBbM4Czn4C"
+        data-category-id="DIC_kwDOQmNdfBbM4Czn4C"
         data-mapping="pathname"
         data-strict="0"
         data-reactions-enabled="1"
@@ -197,8 +199,7 @@ Then, you will see your arguments of your repository discussion,
 </script>
 ```
 
-
-Open local `quartz/quartz.layout.ts`, and edit
+Open `quartz.layout.ts`, and edit the `afterBody` as follows:
 ```ts
 afterBody: [
   Component.Comments({
@@ -207,11 +208,11 @@ afterBody: [
       // from data-repo
       repo: 'john-ferrel/john-ferrel.github.io',
       // from data-repo-id
-      repoId: 'R_kgDOQmNBbA',
+      repoId: 'R_kgDOQmdsNBbA',
       // from data-category
       category: 'Announcements',
       // from data-category-id
-      categoryId: 'DIC_kwDOQmNBbM4Czn4C',
+      categoryId: 'DIC_kwDOQmNdfBbM4Czn4C',
       
       lang: 'en'
     }
