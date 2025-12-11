@@ -1,5 +1,5 @@
 ---
-title: How to Build Personal Blog by Quartz 4
+title: Build Your Own Blog in Minutes with Quartz 4
 draft: "false"
 tags:
   - blog
