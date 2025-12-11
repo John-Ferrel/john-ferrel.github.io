@@ -4,8 +4,8 @@ draft: "false"
 tags:
   - blog
   - "#quartz"
-created: 2025-12-09 23:40
-modified: 2025-12-10 21:05
+created: 2025-12-11 22:01
+modified: 2025-12-11 22:12
 ---
 Ready to start a blog with ease? 
 Quartz 4 is the perfect tool for the job! Follow my step-by-step tutorial to build your own, or dive into the [Welcome to Quartz 4](https://quartz.jzhao.xyz/) documentation for even more features.
