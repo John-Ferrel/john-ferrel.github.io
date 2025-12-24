@@ -3,9 +3,14 @@ title: GitFlow
 draft: "false"
 tags:
   - git
-created: 2025-12-11 22:01
-modified: 2025-12-11 22:08
+created: 2025-12-11 22:12
+modified: 2025-12-24 21:24
 ---
+
+>[!info] 更新 2025 Dec 15
+> Git 2.23后, 推荐不用git checkout 了, 
+> git switch 负责分支管理
+> git restore 负责文件恢复
 ## 分支命名规范
 
 首先，我们约定一套清晰的分支命名规范，这有助于团队成员快速理解分支的用途。
@@ -29,7 +34,8 @@ git checkout master
 git pull origin master
 # Create and switch to a new feature branch.
 # Replace 'xxx' with your specific feature name, e.g., 'user-authentication'.
-git checkout -b feature/xxx
+# git checkout -b feature/xxx
+git switch -c feature/xxx
 ```
 
 2. **日常开发**:
@@ -87,11 +93,8 @@ Description: 该功能包含了xx的数据表、后台管理服务和前端展�
 
 ```bash
 # Switch to the master branch.
-git checkout master
-
-# pull if it has been merged.
-git pull origin master
-
+# git checkout master
+git switch master
 # Safely delete the local branch if it has been merged.
 # The '-d' flag will prevent deletion if the branch is not fully merged.
 git branch -d feature/xxx
@@ -105,11 +108,13 @@ git branch -d feature/xxx
 
 ```bash
 # Branch off the latest master.
-git checkout master
+# git checkout master
+git switch master
 git pull origin master
 # Create a new branch for the fix.
 # Replace 'xxx' with the specific issue, e.g., 'points-display-error'.
-git checkout -b fix/xxx
+# git checkout -b fix/xxx
+git switch -c fix/xxx
 # Fix the bug...
 git add /xxx
 git commit -m "fix: fix display bug on page"
@@ -126,3 +131,42 @@ MR 保证了以下几点:
 2. 清晰、可读、有意义的 Git 历史记录
 3. 思考的暂停点, 可以切换去更紧急的任务
 4. 主分支保持干净, 风险可控
+
+## 高级技巧
+
+### Restore
+
+```bash
+# restore files
+git restore file.txt # restore a single file
+git restore . # restore all modified files
+# remore from stage
+git restore --staged file.txt
+# restore to specific version
+git restore --source=HEAD~2 file.txt
+```
+
+### Rebase
+```bash
+# interactive rebse
+git rebase -i HEAD~3
+# continue after resolving conflicts
+git add resolved-file
+git rebase --continue
+# abort rebase
+git rebase --abort
+# skip current commit
+git rebase --skip
+```
+
+### Others
+```bash
+# switch branch
+git switch -           # switch to last branch
+# check branch status
+git branch --merged    # list merged branches
+git branch -vv         # show branch details with tracking info
+# clean
+git clean -fd          # remove untracked files and directories
+git clean -fdn         # dry run: show what would be removed
+```

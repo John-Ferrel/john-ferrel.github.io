@@ -49,7 +49,7 @@ npx quartz create
 
 When prompted, select `Empty Quartz`, `Shortest path(default)`.
 
-Now, we are at the root path of quartz, which will be the default path in this tutorial.
+Now, we are at the root path of quartz, which will be the **default path** in this tutorial.
 
 Enter the sub folder `content`, and you will find `index.md`, which is the home page.
 
@@ -70,7 +70,19 @@ The rest of your content lives here. You can use **Markdown** here :)
 ```
 ## 4. Build and Preview Locally
 
-Open `quartz.config.ts` and change the `pageTitle` from `pageTitle: "Quartz 4"` to `pageTitle: "<Your Blog Name>"`.
+Open `quartz.config.ts`
+- change the `pageTitle` from `pageTitle: "Quartz 4"` to `pageTitle: "<Your Blog Name>"`.
+
+Open `quartz.layout.ts`,
+```ts
+  footer: Component.Footer({
+    links: {
+      GitHub: "https://github.com/<Your GitHub Name>",
+      // Friend Link(my blog)
+      "John's Blog": "https://github.com/John-Ferrel",
+    },
+  }),
+```
 
 Run the command to build Blog locally
 
