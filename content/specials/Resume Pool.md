@@ -8,11 +8,11 @@ modified: 2025-12-29 22:50
 ---
 
 ## Meta Data
-Name: xx
-Phone: xx
-Email：[xiah19@fudan.edu.cn](mailto:xiah19@fudan.edu.cn)
-Github: [github.com/John-Ferrel](https://github.com/John-Ferrel)
-Blog: [John-Ferrel's Blog](https://john-ferrel.github.io/)
+Name: xx  
+Phone: xx  
+Email：[xiah19@fudan.edu.cn](mailto:xiah19@fudan.edu.cn)  
+Github: [github.com/John-Ferrel](https://github.com/John-Ferrel)  
+Blog: [John-Ferrel's Blog](https://john-ferrel.github.io/)  
 
 ## Education Experience
 
@@ -147,7 +147,7 @@ Blog: [John-Ferrel's Blog](https://john-ferrel.github.io/)
 技术栈: MySQL,  Django,  BootStrap
 ## Work Experience
 
-当前职位: 2024.07 -至今
+当前职位: 2025.05 -至今
 
 公司: xx
 
@@ -168,6 +168,16 @@ Blog: [John-Ferrel's Blog](https://john-ferrel.github.io/)
 
 技术栈：Python,  Flask,  MongoDB,  Celery,  Docker,  Redis
 
+情景: 面向零售销售预测场景，设计可扩展的预测与分配系统，应对季节性、冷启动与数据稀疏问题
+
+行动:
+- 基于属性聚合（品类 / 品牌等）构建时间序列预测模型，捕捉稳定季节性趋势
+- 针对新品与 0 膨胀问题，引入经验分布与条件分布建模，避免 SKU 级直接预测的不稳定性
+- 结合 Bayesian Network 与 tabular 预测方法，实现从聚合预测到 SKU 层级的 allocation 拆解
+- 基于 Docker + Flask + Celery + Redis + MongoDB 构建无状态预测服务，支持横向扩展与多模型并发调用
+结果:
+- 显著提升新品与长尾 SKU 预测的稳定性与可解释性
+- 预测服务可作为通用模块，被上层策略 / Agent 系统调用
 
 ## Technical Skills
 
