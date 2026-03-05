@@ -77,3 +77,34 @@ def max_f(arr):
 	
 	return max_val
 ```
+
+### 整数列表子列乘积最大值
+
+可以想见, 只要列表越长,绝对值就越大.
+所以只有3个候选列表,\[0:n+1\], \[i+1, n+1\], \[0, j-1 \], i, j 是第一个, 最后一个负数.
+特别的, 如果存在0, 0就会导致分出左右两边.
+所以是个递归?
+
+```python
+
+def max_sub_list(lst:list):
+	n = len(lst)
+	if n == 0: return 0
+	if n == 1: return lst[0]
+	
+	max_ending_here = min_ending_here = global_max = nums[0]
+	
+	for i in range(1, n):
+		num = lst[i]
+		
+		candidates = (num, 
+					max_ending_here * num,
+					min_ending_here * num)
+		max_ending_here = max(candidates)
+		min_ending_hrer = min(candidates)
+		
+		global_max = max(global_max, max_ending_here)
+	
+	return global_max
+
+```
