@@ -1,6 +1,6 @@
 ---
 title: Hello World
-draft: "false"
+draft: false
 tags:
   - example-tag
 created: 2025-12-11 22:01

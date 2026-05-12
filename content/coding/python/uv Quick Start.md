@@ -1,6 +1,6 @@
 ---
 title: uv Quick Start
-draft: "false"
+draft: false
 tags:
   - uv
   - python

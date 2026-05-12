@@ -1,6 +1,6 @@
 ---
 title: Coding Practices
-draft: "False"
+draft: false
 tags:
   - code
 created: 2026-02-27 22:29

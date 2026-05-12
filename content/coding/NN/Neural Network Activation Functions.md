@@ -1,6 +1,6 @@
 ---
 title: Neural Network Activation Functions
-draft: "false"
+draft: false
 tags:
   - nn
   - ai

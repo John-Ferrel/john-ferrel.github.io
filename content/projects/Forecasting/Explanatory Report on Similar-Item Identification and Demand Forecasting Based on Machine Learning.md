@@ -1,6 +1,6 @@
 ---
 title: Similar-Item Identification and Demand Forecasting Based on Machine Learning
-draft: "false"
+draft: false
 tags:
   - forecasting
   - machine-learning

@@ -1,6 +1,6 @@
 ---
 title: Forecasting Principles and Practice 3rd
-draft: "false"
+draft: false
 tags:
   - math
   - statistics

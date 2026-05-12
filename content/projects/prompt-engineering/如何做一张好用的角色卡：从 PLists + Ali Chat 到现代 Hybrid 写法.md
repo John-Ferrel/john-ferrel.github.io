@@ -1,6 +1,6 @@
 ---
 title: 如何做一张好用的角色卡：从 PLists + Ali Chat 到现代 Hybrid 写法
-draft: "false"
+draft: false
 tags:
   - ai
   - llm

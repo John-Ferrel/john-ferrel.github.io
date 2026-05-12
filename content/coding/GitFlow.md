@@ -1,6 +1,6 @@
 ---
 title: GitFlow
-draft: "false"
+draft: false
 tags:
   - git
 created: 2025-12-11 22:12

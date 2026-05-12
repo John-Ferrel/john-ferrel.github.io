@@ -1,6 +1,6 @@
 ---
 title: Interviews Reviewing
-draft: "False"
+draft: false
 tags:
   - interview
 created: 2026-02-25 19:45

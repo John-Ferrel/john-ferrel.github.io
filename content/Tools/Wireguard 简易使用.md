@@ -1,6 +1,6 @@
 ---
 title: wireguard 简易使用
-draft: "false"
+draft: false
 tags:
   - vpn
 created: 2026-04-16 00:19

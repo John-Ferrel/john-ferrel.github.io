@@ -1,6 +1,6 @@
 ---
 title: Hello World!
-draft: "False"
+draft: false
 tags:
 created: 2025-12-11 22:12
 modified: 2025-12-24 22:13

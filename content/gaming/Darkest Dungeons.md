@@ -1,6 +1,6 @@
 ---
 title: Darkest Dungeons
-draft: "false"
+draft: false
 tags:
   - game
   - DarkestDungeons

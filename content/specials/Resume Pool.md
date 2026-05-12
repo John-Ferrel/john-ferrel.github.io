@@ -1,6 +1,6 @@
 ---
 title: Resume Pool
-draft: "false"
+draft: false
 tags:
   - resume
 created: 2025-12-29 21:45

@@ -1,6 +1,6 @@
 ---
 title: Python Tips
-draft: "false"
+draft: false
 tags:
   - python
   - coding

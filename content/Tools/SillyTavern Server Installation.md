@@ -1,6 +1,6 @@
 ---
 title: SillyTavern Server Installation
-draft: "false"
+draft: false
 tags:
   - llm
   - server

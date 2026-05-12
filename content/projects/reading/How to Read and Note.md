@@ -1,6 +1,6 @@
 ---
 title: How to Read and Note
-draft: "false"
+draft: false
 tags:
   - meta
   - reading

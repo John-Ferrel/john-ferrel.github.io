@@ -1,6 +1,6 @@
 ---
 title: Build Your Own Blog in Minutes with Quartz 4
-draft: "false"
+draft: false
 tags:
   - blog
   - "#quartz"

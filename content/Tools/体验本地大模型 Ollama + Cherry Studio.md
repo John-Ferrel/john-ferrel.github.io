@@ -1,6 +1,6 @@
 ---
 title: 体验本地大模型 Ollama + Cherry Studio
-draft: "false"
+draft: false
 tags:
   - ai
   - ollama

@@ -1,6 +1,6 @@
 ---
 title: WSL Command Cheat Sheet
-draft: "true"
+draft: false
 tags:
   - wsl
   - ubuntu

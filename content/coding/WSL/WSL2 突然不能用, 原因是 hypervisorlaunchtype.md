@@ -1,6 +1,6 @@
 ---
 title: WSL2 突然不能用, 原因是 hypervisorlaunchtype
-draft: "false"
+draft: false
 tags:
   - wsl
 created: 2026-05-04 15:15
