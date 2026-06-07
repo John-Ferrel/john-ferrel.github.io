@@ -131,6 +131,14 @@ uv pip install fastapi
 uv pip install numpy pandas matplotlib
 ```
 
+>[!info]
+>更推荐的做法其实是:
+>uv add
+>uv sync
+>因为 uv pip没有计算更新 .toml 和.lock
+
+
+
 ---
 
 # 6 从 requirements.txt 安装
