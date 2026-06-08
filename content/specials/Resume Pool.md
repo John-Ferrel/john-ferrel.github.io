@@ -4,20 +4,20 @@ draft: false
 tags:
   - resume
 created: 2025-12-29 21:45
-modified: 2026-06-08
+modified: 2026-06-09
 ---
 
 # Resume Pool
 
-> 用途：这是简历事实库，不是最终简历。。
+> 用途：这是可公开的简历素材库，不是最终简历。内容保留可追问的技术主线，但避免暴露未公开的客户、验收、内部指标、数据规模、部署环境和商业细节。需要投递时，可在本地私有版本中再补充精确数字和公司口径。
 
 ## 0. 基础信息
 
 ### 个人信息
 
-- 姓名：待填写
-- 手机：待填写
-- 邮箱：[xiah19@fudan.edu.cn](mailto:xiah19@fudan.edu.cn)
+- 姓名：公开版省略
+- 手机：公开版省略
+- 邮箱：公开版省略
 - GitHub：[github.com/John-Ferrel](https://github.com/John-Ferrel)
 - Blog：[John-Ferrel's Blog](https://john-ferrel.github.io/)
 
@@ -45,11 +45,11 @@ modified: 2026-06-08
 
 ---
 
-# 1. 第七在线：服饰零售新品预测 / 需求预测 / 预测服务化
+# 1. xxx：服饰零售新品预测 / 需求预测 / 预测服务化
 
 ## 1.1 背景 / 业务问题
 
-当前工作围绕零售 SaaS 与服饰行业数据智能场景展开，重点之一是面向女装 / 鞋服零售客户的新品销售预测与业务评估。
+当前工作围绕零售 SaaS 与服饰行业数据智能场景展开，重点之一是面向鞋服零售场景的新品销售预测与业务评估。
 
 业务场景的核心难点：
 
@@ -57,7 +57,7 @@ modified: 2026-06-08
 - 预测粒度偏细，主要关注款色级表现。
 - 销售受订单、铺货、库存、到货、门店覆盖、断码断色、折扣、生命周期长度影响。
 - 新品销售存在冷启动、长尾分布、零膨胀和历史可比样本不足问题。
-- 业务方关注“预测准确率”，但当前数据更接近 observed sales，而不一定能还原 unconstrained demand。
+- 业务方关注“预测准确率”，但实际可观测数据更接近 observed sales，而不一定能还原 unconstrained demand。
 
 简历中应强调：这不是单纯训练一个模型，而是围绕“什么能被预测、预测目标如何定义、验证如何设计、结果边界如何解释”建立一套分析与建模流程。
 
@@ -65,13 +65,14 @@ modified: 2026-06-08
 
 - 参与并推动新品预测 POC / 分析流程建设。
 - 负责或深度参与数据口径梳理、建模数据集构建、baseline 设计、评估指标设计、业务解释、字段补充建议和服务化封装。
-- 在客户或业务沟通中解释当前数据能支持什么、不能支持什么，以及后续最小补充字段。
+- 在业务沟通中解释当前数据能支持什么、不能支持什么，以及后续最小补充字段。
 
-待确认：
+公开版保留口径：
 
-- 是否可以写“主导”。
-- 是否已有正式上线、客户验收或生产调用。
-- 是否有明确模型效果数值、准确率区间或业务收益。
+- 可以写“主导数据口径、建模验证、服务化和业务解释”，避免泛泛写“主导项目”。
+- 已形成可被上层业务系统调用的服务化成果；公开版不展开客户、验收和内部上线口径。
+- 预测链路中包含商品图片向量化，将视觉相似性作为相似品匹配和新品预测的补充信息。
+- 有内部评估结果支撑模型改进；公开版不列精确指标。
 
 ## 1.3 输入数据 / 系统上下文
 
@@ -81,7 +82,8 @@ modified: 2026-06-08
 - 历史销售数据。
 - 商品主数据。
 - 年季 / 波段 / 品类 / 商品属性等字段。
-- 数据覆盖夏季商品，包含 2023 / 2024 / 2025 年订单数据，以及 2023 / 2024 年销售数据。
+- 商品图片向量化特征，用于相似品计算匹配。
+- 数据覆盖跨年份订单与销售记录；公开版不展开具体客户数据周期。
 - 建模粒度主要为款色级。
 - 关键时间锚点包括 launch date 和 third sale date，其中 launch date 是主口径，third sale date 可作为对照口径。
 - 标签包括 4W / 8W / 12W 累计销量与累计销售额。
@@ -97,10 +99,11 @@ modified: 2026-06-08
 - 构建从原始订单、销售、商品主数据到款色级建模样本的数据 pipeline。
 - 统一 launch date、third sale date、预测窗口、标签窗口、样本过滤、缺失处理和异常样本处理口径。
 - 设计订单基线、分组统计基线和机器学习模型的统一评估流程。
+- 引入图片向量化特征辅助相似品计算匹配，将视觉相似性纳入新品预测特征体系。
 - 将模型评估拆成整体误差、系统性偏差、排序能力、高潜商品识别、分组稳定性和业务解释，而不是只看单一“准确率”。
 - 针对新品冷启动、长尾和稀疏问题，设计“相似历史样本学习 / 聚合预测 / 结构分配”的思路，避免直接在极细 SKU 粒度上做不稳定预测。
 - 分析 observed sales 与 unconstrained demand 的差异，避免把库存、铺货、到货或生命周期约束误判为模型误差。
-- 输出内部报告和客户沟通材料，说明 baseline 表现、数据边界、当前结果解释和后续字段补充方向。
+- 输出内部分析报告和业务沟通材料，说明 baseline 表现、数据边界、当前结果解释和后续字段补充方向。
 
 ## 1.5 技术细节
 
@@ -108,6 +111,7 @@ modified: 2026-06-08
 
 - 使用 tabular ML / GBDT / LightGBM 类模型的思路处理新品预测，核心是让模型从历史商品、时间、门店和运营特征中隐式学习相似样本。
 - 不把“相似款”理解为人工指定某一个商品，而是转化为：商品属性、时间属性、价格带、品类、波段、生命周期等特征空间中的相似样本集合。
+- 对商品图片做向量化表示，将视觉相似性作为相似品匹配和新品预测的补充信息。
 - 对新品、短生命周期商品和大量 0 序列，避免直接套用单品级长历史时间序列外推。
 
 ### 时间切分与泄露控制
@@ -127,7 +131,7 @@ modified: 2026-06-08
 
 ### 数据脱敏与指标污染
 
-客户提供的订单和销售字段存在统一线性变换：
+分析中遇到的部分订单和销售字段存在统一线性变换：
 
 ```text
 X_masked = A * X_true + B
@@ -144,13 +148,13 @@ X_masked = A * X_true + B
 ### 工程化 / 服务化
 
 - 将建模、评估与报告流程封装为可重复运行的后端服务或分析 pipeline。
-- 素材中出现过 Docker、Flask、Celery、Redis、MongoDB，用于异步任务、结果持久化、批量实验和业务系统调用。
+- 工程实现涉及 Web 服务、异步任务、缓存 / 持久化组件和批量实验流程。
 - 如果写正式简历，应优先写“可重复 pipeline、任务状态、结果持久化、报告输出、业务系统调用接口”，工具名放在次要位置。
 
-待确认：
+公开版保留口径：
 
-- 当前预测服务是否实际使用 Flask + Celery + Redis + MongoDB，还是早期方案 / 草稿。
-- 是否已经被上层策略系统或 AI Copilot 调用。
+- 预测服务已被上层业务系统调用。
+- 公开版不展开具体生产框架、部署环境和系统调用细节。
 
 ## 1.6 主要难点
 
@@ -171,13 +175,16 @@ X_masked = A * X_true + B
 - 形成多指标评估框架。
 - 形成线性脱敏字段的聚合污染分析和处理原则。
 - 输出类似“机器学习如何自动学习相似样本 / 相似款”的业务解释报告。
+- 形成可被上层业务系统调用的预测服务化成果。
+- 内部 POC 评估显示模型表现优于业务 baseline；公开版不列精确指标。
 
 不应直接写：
 
-- 显著提升预测准确率。
-- 已正式上线并产生业务收益。
+- 不带 POC 评估口径写“显著提升预测准确率”。
+- 公开版不写具体客户、验收状态、上线范围和精确指标。
 - 服务稳定性 99.9%。
 - 推理时间从秒级到毫秒级。
+- 已产生明确业务收益或财务收益，除非后续有业务统计口径。
 
 除非后续补充明确证据。
 
@@ -188,13 +195,17 @@ X_masked = A * X_true + B
 - 数据年份：订单数据覆盖 2023 / 2024 / 2025，销售数据覆盖 2023 / 2024。
 - 标签窗口：4W / 8W / 12W。
 - 粒度：款色级。
+- 数据规模：内部数据量级较大，公开版不列具体规模。
+- 模型效果：内部 POC 评估优于业务 baseline，公开版不列具体数值。
+- baseline：业务特征 + 分桶线性。
+- 评估指标：MAPE、MAE、RMSE、Top-K。
+- 交付状态：已形成业务系统可调用的服务化成果，公开版不展开验收口径。
 
 待确认：
 
-- 样本量、款色数、订单行数、销售行数。
-- baseline 与模型的实际指标。
-- Top-K 命中率或排序相关性。
-- 客户数量、POC 周期、是否验收。
+- 款色数、订单行数、销售行数。
+- Top-K 命中率或排序相关性的具体数值。
+- 业务使用范围、POC 周期和正式投递时可公开的指标口径。
 
 ## 1.9 可用于简历的 bullet 候选
 
@@ -206,11 +217,12 @@ X_masked = A * X_true + B
 - 建立多口径预测评估框架，从 WAPE / Bias、Spearman、Top-K、高潜商品识别和分组误差解释模型表现。
 - 分析 observed sales 与 unconstrained demand 的差异，识别库存、铺货、到货、折扣等缺失字段对预测标签和误差归因的影响。
 - 识别线性脱敏字段在聚合、比值、占比、同比和误差指标中的污染机制，建立先还原、后聚合的校验原则。
+- 在内部 POC 评估中优于业务 baseline，并通过 MAE / RMSE / Top-K 等指标补充验证整体误差与高潜商品识别能力。
 
 偏工程化：
 
 - 将新品预测的数据处理、建模评估和报告输出整理为可重复运行的 pipeline，支持批量实验、结果持久化和业务系统集成。
-- 围绕预测服务化设计异步任务、任务状态、结果缓存和上层系统调用边界，将 notebook 分析沉淀为可复用服务模块。
+- 封装预测服务，围绕异步任务、任务状态、结果缓存和上层系统调用边界，将 notebook 分析沉淀为可复用服务模块。
 
 ## 1.10 面试可追问点
 
@@ -227,47 +239,47 @@ X_masked = A * X_true + B
 
 ## 1.11 不建议夸大的内容
 
-- 不写“显著提升准确率”，除非有实验表和口径。
+- 公开版不写精确 MAPE；投递版如需写指标，必须限定为 POC 评估口径。
 - 不写“准确预测真实需求”，当前更准确的说法是预测 observed sales，并识别其与 demand 的差异。
-- 不写“完整需求预测系统上线”，除非确认已上线。
+- 不写“完整需求预测系统上线并产生收益”，除非确认上线范围和收益口径。
 - 不写“支持百万级高并发”或类似后端性能指标。
 - 不把 WAPE / MAE / RMSE 罗列成成果，指标只是评估工具。
 
 ---
 
-# 2. 第七在线：SaaS Copilot / MP Copilot / Dify + FastAPI Adapter
+# 2. 零售 SaaS Copilot / LLM 应用工程 / Workflow + FastAPI Adapter
 
 ## 2.1 背景 / 业务问题
 
-公司希望在零售 SaaS 系统中引入 AI Copilot，使 AI 能够理解当前业务页面、表格数据、指标含义和用户问题，并给出只读、可解释、低风险的业务辅助回答。
+项目目标是在零售 SaaS 系统中引入 AI Copilot，使 AI 能够理解当前业务页面、表格数据、指标含义和用户问题，并给出只读、可解释、低风险的业务辅助回答。
 
 项目重点不是单纯聊天机器人，而是页面上下文驱动的业务 Copilot：
 
-- 前端 / Java 侧采集或组织当前页面上下文。
-- Python Adapter 负责结构化上下文映射、Dify 输入构造、响应归一化和权限边界。
-- Dify Workflow 负责 LLM 编排、知识库检索和回答生成。
+- 业务系统侧采集或组织当前页面上下文。
+- Python Adapter 负责结构化上下文映射、LLM Workflow 输入构造、响应归一化和权限边界。
+- LLM Workflow 负责模型编排、知识库检索和回答生成。
 
 早期 demo 涉及首页 co-planner、MP 页面等场景。MP 页面是更适合业务演示和产品化探索的素材。
 
 ## 2.2 我的角色
 
-- 作为项目核心推动者之一，负责整体方案设计和 Python Adapter 开发。
-- 参与 Dify Workflow 对接、Java 调用契约定义、上下文结构设计、统一响应格式、评测素材和业务 demo 支撑。
+- 主导早期测试阶段的架构设计与 Python / LLM 侧实现。
+- 负责 Python Adapter 开发，参与 LLM Workflow 对接、业务系统调用契约定义、上下文结构设计、统一响应格式、评测素材和业务 demo 支撑。
 
-待确认：
+已确认：
 
-- 是否可以写“主导”。
-- 是否已经进入正式产品环境。
-- 是否有真实用户使用数据或业务验收结果。
+- 可以写“主导”，但限定为架构设计和 Python / LLM 侧实现。
+- 项目处于早期测试阶段，尚未进入正式产品环境。
+- 暂无真实用户使用数据或业务验收结果。
 
 ## 2.3 输入数据 / 系统上下文
 
 典型调用链：
 
 ```text
-Java / ZK Page Context
+Business Page Context
   -> Python FastAPI Adapter
-  -> Dify Workflow / RAG
+  -> LLM Workflow / RAG
   -> Normalized Copilot Response
 ```
 
@@ -282,7 +294,7 @@ MP Copilot 请求结构素材：
 - page_summary
 - read_only_policy
 
-Dify 侧输入素材：
+LLM Workflow 侧输入素材：
 
 - page_context
 - grid_metadata
@@ -303,12 +315,12 @@ Dify 侧输入素材：
 
 ## 2.4 核心工作
 
-- 设计 Java 到 Python 的 MP 页面 Copilot 数据契约，使 Java 侧只需传结构化业务 JSON，不需要关心 Dify 内部输入格式。
-- 在 Python Adapter 内完成 Dify 输入序列化、table snapshot 处理、fallback 逻辑和响应归一化。
+- 设计业务系统到 Python 的 MP 页面 Copilot 数据契约，使业务系统侧只需传结构化 JSON，不需要关心 LLM Workflow 内部输入格式。
+- 在 Python Adapter 内完成 LLM Workflow 输入序列化、table snapshot 处理、fallback 逻辑和响应归一化。
 - 设计 page_context、grid_metadata、table_snapshot、page_summary、read_only_policy 等结构化输入字段。
 - 保持只读策略，避免 AI 直接执行高风险写操作。
 - 设计业务知识库、评测问题集、页面上下文样例和 answer-quality checklist，用于支持 demo、标注和后续迭代。
-- 与 Java / 前端侧沟通集成方式，包括独立 web chat window / side panel、请求通过 Java 提交、页面信息由 Java 组织后传给 Python。
+- 与业务系统 / 前端侧沟通集成方式，包括独立 web chat window / side panel、请求由业务系统提交、页面信息组织后传给 Python。
 - 部署 FastAPI + uvicorn + systemd，提供 health / readyz / demo-ui 等辅助接口。
 
 ## 2.5 技术细节
@@ -317,7 +329,7 @@ Dify 侧输入素材：
 
 Python Adapter 的价值不只是“转发请求”：
 
-- 屏蔽 Dify Workflow 的输入格式变化。
+- 屏蔽 LLM Workflow 的输入格式变化。
 - 将页面上下文、表格快照和只读策略转成 LLM 可消费的结构。
 - 对模型输出做 response normalization，避免前端处理不稳定自由文本。
 - 在 SaaS 系统与 LLM Workflow 之间建立权限、格式和错误处理边界。
@@ -346,14 +358,14 @@ Python Adapter 的价值不只是“转发请求”：
 来自工程笔记的可证据化素材：
 
 - Python 3.12、FastAPI、uv、pytest、systemd。
-- Git bare repo + post-receive hook + uv sync --frozen + pytest + systemd restart + /health。
-- 成功部署日志中出现过 41 passed、health check OK、deploy finished successfully。
-- 这套流程适合内网 MVP / demo 阶段的小型 Python 服务，重点是可重复、可验证、可追踪。
+- Git bare repo + post-receive hook + lockfile 依赖同步 + pytest + 服务重启 + health check。
+- 部署流程包含依赖同步、导入检查、语法检查、测试、服务重启和健康检查。
+- 这套流程适合 MVP / demo 阶段的小型 Python 服务，重点是可重复、可验证、可追踪。
 
 ## 2.6 主要难点
 
 - LLM 不能直接理解业务页面，必须把页面状态、表格字段、筛选条件和用户问题结构化。
-- Java 侧、Python Adapter 和 Dify Workflow 的职责边界需要清楚，否则系统会强耦合。
+- 业务系统侧、Python Adapter 和 LLM Workflow 的职责边界需要清楚，否则系统会强耦合。
 - Copilot 早期必须低风险，不能让模型直接执行写操作。
 - 表格快照不能无限传，需要在信息量、上下文长度和隐私边界之间取舍。
 - LLM 输出天然不稳定，必须通过响应归一化和质量清单降低前端集成成本。
@@ -363,14 +375,15 @@ Python Adapter 的价值不只是“转发请求”：
 已有证据支持：
 
 - 形成 MP Copilot 数据契约与调用链设计。
-- 实现或设计 Python FastAPI Adapter 对接 Dify Workflow。
+- 实现或设计 Python FastAPI Adapter 对接 LLM Workflow。
 - 形成页面上下文、表格快照、只读策略和归一化响应结构。
-- 搭建内网 MVP 服务的轻量 CI/CD 闭环。
-- 支持 demo / pilot 阶段迭代。
+- 搭建 MVP 服务的轻量 CI/CD 闭环。
+- 支持早期测试 / demo 阶段迭代。
 
 不应直接写：
 
 - 正式大规模上线。
+- 已进入正式产品环境。
 - 多租户生产平台级能力。
 - 99.9% availability。
 - 明确节省人工成本或提升转化率。
@@ -379,29 +392,28 @@ Python Adapter 的价值不只是“转发请求”：
 
 可写：
 
-- 部署流程包含 `uv sync --frozen`、import check、compileall、pytest、systemd restart、/health check。
-- 成功日志中有 `41 passed` 测试记录。
+- 部署流程包含依赖同步、import check、compileall、pytest、服务重启和 /health check。
 - 服务环境素材：Python 3.12、FastAPI、uv、pytest、systemd。
 
-待确认：
+当前不建议量化：
 
-- Copilot 接口数量、demo 页面数量、知识库文档数量。
-- Dify Workflow 节点数量。
-- 实际用户、调用量、响应质量评测结果。
+- Copilot 接口数量、demo 页面数量、知识库文档数量：早期阶段，不好衡量。
+- Workflow 节点数量：暂不作为简历指标。
+- 实际用户、调用量、响应质量评测结果：暂无。
 
 ## 2.9 可用于简历的 bullet 候选
 
-- 参与零售 SaaS Copilot 原型建设，设计 Java 页面上下文 -> Python FastAPI Adapter -> Dify Workflow 的调用链，将页面状态、表格快照和用户问题转化为可控的 LLM 输入。
-- 设计 MP 页面 Copilot 数据契约，封装 page_context、grid_metadata、table_snapshot、page_summary、read_only_policy 等结构化字段，降低 Java 侧与 LLM Workflow 的耦合。
-- 在 Python Adapter 中实现 Dify 输入映射、table snapshot 处理、fallback 逻辑与响应归一化，输出 direct_answer、page_interpretation、next_steps、caveats、guardrails 等统一结构。
+- 主导零售 SaaS Copilot 早期测试阶段的架构设计与 Python / LLM 侧实现，设计业务页面上下文 -> Python FastAPI Adapter -> LLM Workflow 的调用链，将页面状态、表格快照和用户问题转化为可控的 LLM 输入。
+- 设计 MP 页面 Copilot 数据契约，封装 page_context、grid_metadata、table_snapshot、page_summary、read_only_policy 等结构化字段，降低业务系统侧与 LLM Workflow 的耦合。
+- 在 Python Adapter 中实现 Workflow 输入映射、table snapshot 处理、fallback 逻辑与响应归一化，输出 direct_answer、page_interpretation、next_steps、caveats、guardrails 等统一结构。
 - 设计只读边界、业务知识库、标准问题集和 answer-quality checklist，支持 Copilot demo、回答质量评估与后续迭代。
-- 为内网 FastAPI 服务搭建轻量部署闭环，通过 Git bare repo、post-receive hook、uv lockfile、pytest、systemd 和 /health check 实现可重复、可验证、可追踪的 MVP 部署流程。
+- 为 FastAPI 服务搭建轻量部署闭环，通过 Git bare repo、post-receive hook、lockfile、pytest、服务托管和 /health check 实现可重复、可验证、可追踪的 MVP 部署流程。
 
 ## 2.10 面试可追问点
 
-- 为什么不让 Java 直接调用 Dify？
+- 为什么不让业务系统直接调用 LLM Workflow？
 - Python Adapter 具体承担哪些职责？
-- Dify 在系统里承担什么，不承担什么？
+- LLM Workflow 在系统里承担什么，不承担什么？
 - 页面上下文和 table snapshot 如何组织？
 - read_only_policy 如何防止高风险操作？
 - response normalization 解决什么问题？
@@ -411,7 +423,7 @@ Python Adapter 的价值不只是“转发请求”：
 
 ## 2.11 不建议夸大的内容
 
-- 不把 Dify 写成完整 SaaS 平台。
+- 不把 LLM Workflow 写成完整 SaaS 平台。
 - 不写“自主 Agent 自动操作业务系统”，当前更适合写“只读 Copilot / 业务辅助解释”。
 - 不写生产级 SLA。
 - 不写“解决幻觉问题”，更稳妥是“通过 RAG、上下文约束、响应归一化和质量清单降低风险”。
@@ -478,26 +490,34 @@ Python Adapter 的价值不只是“转发请求”：
 
 - 在 SaaS Copilot、数据分析、个人项目和文档维护中形成 AI-assisted workflow。
 - 有 GitFlow、uv、轻量 CI/CD、编码实践等工程笔记支撑。
+- 采用小步迭代方式推进 AI coding，降低单次大改动风险。
+- 正在沉淀团队 / 项目层面的 AI-assisted engineering 规范，由本人主导推进。
+- 实践中结合 TDD 思路，让 AI coding 输出进入测试驱动或测试补充流程。
+- 维护 ARCHITECTURE、AGENTS、ADR、PLAN、logs 等工程文档，使 AI 生成内容有上下文和追踪记录。
 
 待确认：
 
-- 是否有具体项目中的 PR / commit / 测试数量可引用。
-- 是否有团队层面的推广或规范沉淀。
+- 是否有具体 PR / commit 数量、测试数量或文档数量可引用。
 
 ## 3.8 可量化信息
+
+可写但需谨慎：
+
+- 采用 TDD / 测试补充方式约束 AI coding 输出。
+- 文档体系包括 ARCHITECTURE、AGENTS、多个 ADR、PLAN、logs 等。
+- 在部分迭代中，周期从约 3 周压缩到约 1 周。正式简历中只有在能解释统计口径时再写。
 
 待确认：
 
 - AI coding 辅助完成的模块数量。
-- 测试数量。
-- 文档数量。
-- 迭代周期变化。
+- 可公开的测试数量、文档数量和迭代周期统计口径。
 
 ## 3.9 可用于简历的 bullet 候选
 
 - 在 SaaS Copilot 原型、数据分析脚本与个人项目开发中，将 Codex / VS Code / CLI 纳入需求拆解、初版实现、测试补充和文档维护流程。
 - 通过 Git diff 审查、单元测试、运行验证与 README / ADR / NEXT_ACTIONS 同步管理 AI 生成内容，形成可追踪、可验证的 AI-assisted engineering 工作流。
 - 将 AI coding 主要用于小步重构、接口文档维护、测试样例补充和开发计划拆解，避免不可控的大范围自动生成。
+- 主导沉淀 ARCHITECTURE、AGENTS、ADR、PLAN、logs 等工程文档，将 AI coding 从工具使用收敛为小步迭代、TDD 验证和文档同步的工程流程。
 
 ## 3.10 面试可追问点
 
@@ -510,9 +530,9 @@ Python Adapter 的价值不只是“转发请求”：
 ## 3.11 不建议夸大的内容
 
 - 不写“AI 自动完成大量开发”。
-- 不写“显著提升效率”，除非有时间或交付统计。
+- 不写“显著提升效率”；“3 周 -> 1 周”仅在能说明迭代范围和统计口径时使用。
 - 不把工具清单当成果。
-- 不把个人工作流写成公司级制度，除非有证据。
+- 不把正在沉淀的流程写成成熟公司级制度。
 
 ---
 
@@ -524,15 +544,13 @@ Python Adapter 的价值不只是“转发请求”：
 
 ## 4.2 我的角色
 
-- 参与或负责系统核心功能实现。
-- 涉及前后端功能、合同上传、审批流程、风险展示、文档结构化处理等内容。
-- 了解并参与 LLM Prompt、OCR、RAG、图像处理等相关模块。
+- 负责或深度参与前后端开发、OCR 部分、合同上传、审批流程、风险展示和文档结构化处理。
+- 参与 LLM Prompt、RAG、图像处理等相关模块的系统集成，但不涉及 LLM 模型后训练。
 
-待确认：
+已确认：
 
-- 具体负责模块比例。
-- 是否已有客户试用、上线或交付。
-- 使用的大模型是否确认为 GLM。
+- 项目已交付使用。
+- 使用通用大模型能力完成风险解释与条款理解；公开版不展开具体供应商。
 
 ## 4.3 输入数据 / 系统上下文
 
@@ -549,6 +567,7 @@ Python Adapter 的价值不只是“转发请求”：
 - 结合 Prompt 适配与 RAG 检索降低合同审核中的幻觉风险。
 - 实现合同上传、审批流转、风险提示与结果展示等核心功能。
 - 参与产品需求拆解、原型设计和 SaaS 功能实现。
+- 通过文档下载、文档位置定位和图片截取，让风险提示可以被人工复核。
 
 ## 4.5 技术细节
 
@@ -573,6 +592,7 @@ PDF / 图片输入
 ## 4.6 主要难点
 
 - 合同 PDF / 扫描件质量不稳定，OCR 容易受版式、印章、手写、表格影响。
+- 文档格式复杂，OCR 与结构化解析需要处理不同合同版式、表格和图章区域。
 - 合同风险判断不能只依赖单次 LLM 输出，需要结合规则、知识库和人工可审查结果。
 - 法律 / 合同场景对幻觉敏感，需要输出依据、风险等级和不确定性。
 - 文档结构化与业务流程系统需要结合，不能停留在单次问答。
@@ -584,22 +604,20 @@ PDF / 图片输入
 - 参与工程合同智能审核系统。
 - 覆盖合同上传、审批流转、风险提示和结果展示。
 - 有 OCR、文档解析、LLM、RAG 架构素材。
-
-待确认：
-
-- 项目是否上线。
-- 客户或用户数量。
-- 风险识别准确率或人工审核节省时间。
-- 是否存在真实合同数据评测。
+- 项目已交付使用；公开版不展开客户信息。
+- 基于项目评测数据完成效果验证；公开版不列精确准确率，避免被理解为通用法律判断能力。
 
 ## 4.8 可量化信息
 
-当前无可靠量化指标。
+可写但需谨慎：
+
+- 交付情况：已交付使用；公开版不展开业务使用范围。
+- 风险识别：有项目评测口径；公开版不列精确准确率。
+- 合同样本量：有一定规模样本支撑；公开版不列具体数量。
 
 待确认：
 
-- 合同样本量。
-- OCR 准确率。
+- OCR 准确率。 
 - 风险类型数量。
 - 审批流程节点数量。
 - 项目周期。
@@ -610,22 +628,23 @@ PDF / 图片输入
 - 构建 OCR、文档解析与结构化抽取流程，将合同 PDF / 扫描件转化为可供 LLM 与规则系统消费的文本、段落和条款结构。
 - 结合 Prompt 适配与 RAG 检索为合同风险识别提供法规 / 条款依据，降低单次大模型自由生成带来的幻觉风险。
 - 参与前后端功能实现与产品原型迭代，将合同审核从单次模型调用扩展为可操作的业务流程系统。
+- 在合同审核系统中实现风险结果展示、原文位置定位和图片截取等可复核能力，支持人工审核人员追溯模型判断依据。
 
 ## 4.10 面试可追问点
 
-- 合同审核为什么需要 RAG？
-- OCR / 文档解析中最难的问题是什么？
-- 印章识别、手写识别和表格解析如何影响结果？
-- 如何降低合同场景中的模型幻觉？
-- 风险提示如何让人工可审查？
+- 合同审核为什么需要 RAG？合同格式不统一，法律条文和审核依据必须尽量减少模型幻觉。
+- OCR / 文档解析中最难的问题是什么？合同格式复杂，表格、图章、扫描质量和手写区域会影响结构化结果。
+- 印章识别、手写识别和表格解析如何影响结果？单独展示和定位，不对难以识别的区域过度猜测。
+- 如何降低合同场景中的模型幻觉？通过 RAG 提供法规 / 条款依据，并把回答限定在可检索材料和合同原文范围内。
+- 风险提示如何让人工可审查？提供文档下载、文档位置定位和图片截取。
 - 这个项目和 SaaS Copilot 的架构共性是什么？
 
 ## 4.11 不建议夸大的内容
 
 - 不写“替代人工法务审核”。
-- 不写“法律风险识别准确率达到某数值”，除非有评测。
-- 不写正式商业化成果，除非补充证据。
-- 不把 GLM、OCR、RAG 堆成工具清单，要写清楚文档结构化和业务流程。
+- 公开版不写精确风险识别准确率；投递版如需使用，必须限定为项目评测口径。
+- 公开版不写具体业务使用范围。
+- 不把具体大模型供应商、OCR、RAG 堆成工具清单，要写清楚文档结构化和业务流程。
 
 ---
 
@@ -649,8 +668,8 @@ PDF / 图片输入
 
 ## 5.4 核心工作
 
-- 自动化收集网络汽车数据，建立可持续更新的数据管道。
-- 编写 OCR 脚本，辅助抽取车型参数、价格、评论等信息。
+- 编写网页爬虫，自动化收集数百个网页 / 数据源中的汽车市场数据，建立可持续更新的数据管道。
+- 编写 OCR 脚本，辅助处理图片 / 扫描类资料中的车型参数、价格或配置等信息；具体效果指标未保留，不建议写准确率。
 - 建立 SQL Server 数据库，规范化存储车型参数、价格和评论数据。
 - 针对社交媒体及购物网站评论搭建 LSTM 情感分析模型。
 - 支持季度市场报告的数据分析需求。
@@ -679,27 +698,28 @@ LSTM 情感分析素材：
 现有素材中有以下量化结果：
 
 - 建立覆盖 2000+ 款车型、10 万+ 条用户评论的数据库。
+- 通过网页爬虫覆盖数百个网页 / 数据源。
 - 数据管道稳定运行 6 个月。
 - 支持 3 份季度市场报告的数据需求。
 
-这些数字来自旧 Resume Pool，正式简历使用前建议确认是否准确。
+2000+ 车型、10 万+ 评论、6 个月和 3 份报告来自旧 Resume Pool，正式简历使用前建议确认是否准确。
 
 ## 5.8 可量化信息
 
 - 2000+ 款车型。
 - 10 万+ 条用户评论。
+- 数百个网页 / 数据源。
 - 6 个月数据管道运行期。
 - 3 份季度市场报告。
 
 待确认：
 
-- 数据来源数量。
-- 情感分析模型评估指标。
-- OCR 脚本的具体用途和效果。
+- 情感分析模型评估指标：不记得，不应编造；正式简历不写准确率 / F1 / AUC。
+- OCR 脚本的具体效果：不记得，不应编造；可只写“辅助抽取图片 / 扫描资料中的结构化信息”。
 
 ## 5.9 可用于简历的 bullet 候选
 
-- 在 S&P Global / IHS Markit 汽车部门实习期间，构建汽车车型与用户评论数据管道，清洗并维护 SQL Server 数据库，支持车型竞争力分析和季度市场报告。
+- 在 S&P Global / IHS Markit 汽车部门实习期间，编写网页爬虫构建汽车车型与用户评论数据管道，清洗并维护 SQL Server 数据库，支持车型竞争力分析和季度市场报告。
 - 维护覆盖 2000+ 款车型、10 万+ 条评论的数据资产，规范化存储车型参数、价格和评论信息，支持市场分析师复用。
 - 基于 LSTM 搭建评论情感分析模型，完成文本清洗、分词、序列化、padding、预训练 embedding 和二分类输出流程，为车型口碑分析提供素材。
 
@@ -715,7 +735,8 @@ LSTM 情感分析素材：
 
 ## 5.11 不建议夸大的内容
 
-- 不写模型准确率，除非找到评估记录。
+- 不写模型准确率 / F1 / AUC，除非找到评估记录。
+- 不写 OCR 准确率或抽取效果百分比，除非找到记录。
 - 不写“独立负责整个报告”，更稳妥是“支持市场分析师的数据需求”。
 - 不写生产级数据平台。
 
@@ -772,22 +793,28 @@ LSTM 情感分析素材：
 
 - 已有多个核心系统设计素材。
 - 适合作为个人工程展示，但不一定适合主简历。
+- 有可运行 demo。
+- 项目已在 GitHub 公开开源。
 
-待确认：
+暂无：
 
-- 是否有可运行 demo。
-- 是否开源。
-- 是否有截图、视频或 itch.io 页面。
+- 截图、视频或 itch.io 页面。
 
 ## 6.8 可量化信息
 
 当前无可靠量化指标。
+
+可写：
+
+- GitHub 公开开源。
+- 有可运行 demo。
 
 ## 6.9 可用于简历的 bullet 候选
 
 - 使用 Godot 4 / GDScript 开发六边形拼图游戏原型，设计 center + sectors 地块模型、region 统计、floor network 和入侵路径系统。
 - 采用数据驱动方式维护 tile、terrain、invader 等配置，并通过文档化流程管理玩法迭代与系统重构。
 - 将 AI coding 工具用于功能拆解、代码审查、测试补充与开发文档维护，形成个人项目中的工程化迭代流程。
+- 开源 Godot 4 / GDScript 游戏 demo，通过 GitHub 展示六边形网格、区域统计、路径网络和数据驱动配置等系统设计。
 
 ## 6.10 面试可追问点
 
@@ -809,18 +836,18 @@ LSTM 情感分析素材：
 
 ## A. AI / LLM 应用工程版
 
-重点主线：SaaS Copilot + Dify Workflow + Python FastAPI Adapter + RAG / Prompt / Response Normalization + 页面上下文 + AI coding 工程化 + 预测服务化。
+重点主线：SaaS Copilot + LLM Workflow + Python FastAPI Adapter + RAG / Prompt / Response Normalization + 页面上下文 + AI coding 工程化 + 预测服务化。
 
 可选 bullet：
 
-- 参与零售 SaaS Copilot 原型建设，设计 Java 页面上下文 -> Python FastAPI Adapter -> Dify Workflow 的调用链，将页面状态、表格快照和用户问题转化为可控的 LLM 输入。
-- 设计 MP 页面 Copilot 数据契约，封装 page_context、grid_metadata、table_snapshot、page_summary、read_only_policy 等结构化字段，降低 Java 侧与 Dify Workflow 的耦合。
-- 在 Python Adapter 中实现 Dify 输入映射、table snapshot 处理、fallback 逻辑与响应归一化，输出 direct_answer、page_interpretation、next_steps、caveats、guardrails 等统一结构。
+- 主导零售 SaaS Copilot 早期测试阶段的架构设计与 Python / LLM 侧实现，设计业务页面上下文 -> Python FastAPI Adapter -> LLM Workflow 的调用链，将页面状态、表格快照和用户问题转化为可控的 LLM 输入。
+- 设计 MP 页面 Copilot 数据契约，封装 page_context、grid_metadata、table_snapshot、page_summary、read_only_policy 等结构化字段，降低业务系统侧与 LLM Workflow 的耦合。
+- 在 Python Adapter 中实现 Workflow 输入映射、table snapshot 处理、fallback 逻辑与响应归一化，输出 direct_answer、page_interpretation、next_steps、caveats、guardrails 等统一结构。
 - 设计只读边界、业务知识库、标准问题集和 answer-quality checklist，支持 Copilot demo、回答质量评估与后续迭代。
-- 为内网 FastAPI 服务搭建轻量部署闭环，通过 Git bare repo、post-receive hook、uv lockfile、pytest、systemd 和 /health check 实现可重复、可验证、可追踪的 MVP 部署流程。
-- 参与基于 LLM 的工程合同风险识别系统，结合 OCR、文档解析、Prompt 适配与 RAG 检索，将合同审核从单次模型调用扩展为可操作的业务流程。
-- 将 AI coding 纳入需求拆解、初版实现、测试补充和文档维护流程，通过 Git diff、运行验证和 README / ADR / NEXT_ACTIONS 同步管理生成内容。
-- 将新品预测的数据处理、建模评估和报告输出整理为可重复运行的 pipeline，为后续业务系统或 Copilot 调用提供稳定边界。
+- 为 FastAPI 服务搭建轻量部署闭环，通过 Git bare repo、post-receive hook、lockfile、pytest、服务托管和 /health check 实现可重复、可验证、可追踪的 MVP 部署流程。
+- 参与工程合同风险识别系统，负责前后端与 OCR 相关模块，结合 Prompt 适配与 RAG 检索，将合同审核从单次模型调用扩展为可操作、可复核的业务流程。
+- 将 AI coding 纳入需求拆解、初版实现、TDD / 测试补充和文档维护流程，通过 Git diff、运行验证和 ARCHITECTURE / AGENTS / ADR / PLAN / logs 同步管理生成内容。
+- 将新品预测的数据处理、建模评估和报告输出整理为可重复运行的服务化 pipeline，为上层业务系统调用提供稳定边界。
 
 不建议写：
 
@@ -828,6 +855,7 @@ LSTM 情感分析素材：
 - 大规模生产多租户 LLM 平台。
 - 幻觉彻底解决。
 - 明确降本增效或效率提升百分比。
+- SaaS Copilot 已正式产品化上线。
 
 ## B. 数据科学 / 预测算法版
 
@@ -839,15 +867,17 @@ LSTM 情感分析素材：
 - 设计按年份 / 波段 / 预测时点切分的训练验证流程，结合特征可用性检查、rolling validation 和 embargo 思路控制未来信息泄露风险。
 - 针对新品冷启动、长尾分布、零膨胀和生命周期差异，将问题拆解为相似历史样本学习、总量预测、结构分配与误差归因，避免直接依赖细粒度 SKU 外推。
 - 使用 GBDT / LightGBM 类 tabular 模型思路，将品类、波段、价格带、商品属性、生命周期和订单信息转化为可学习的相似样本特征。
+- 引入商品图片向量化特征辅助相似品计算匹配，将视觉相似性纳入新品预测特征体系。
 - 建立多口径预测评估框架，从 WAPE / Bias、MAE / RMSE、Spearman、Top-K、高潜商品识别和分组误差解释模型表现。
 - 分析 observed sales 与 unconstrained demand 的差异，识别库存、铺货、到货、折扣、促销等缺失字段对预测标签和误差归因的影响。
 - 识别线性脱敏字段在聚合、比值、占比、同比和误差指标中的污染机制，建立先还原、后聚合的校验原则，避免将脱敏偏移误判为业务异常。
+- 在内部 POC 评估中优于业务 baseline，并通过 MAE / RMSE / Top-K 等指标补充验证整体误差与高潜商品识别能力。
 - 输出业务解释报告，将“人工找相似款”转化为“模型在特征空间中学习相似历史样本”的可沟通框架。
 
 不建议写：
 
 - 预测真实需求已经准确落地。
-- 显著提升准确率。
+- 不带口径写“显著提升准确率”；公开版不写精确 MAPE。
 - 复杂深度学习时间序列模型，除非确实做过。
 - 只罗列 WAPE / MAE / RMSE，不解释验证设计和业务口径。
 
@@ -863,7 +893,7 @@ LSTM 情感分析素材：
 - 使用 WAPE / Bias、Spearman 和 Top-K 等指标分别评估误差、系统性偏差、排序能力和高潜目标识别能力。
 - 对模型误差进行业务归因，区分模型问题、样本稀疏、库存 / 铺货约束、折扣促销缺失和标签口径问题。
 - 分析线性脱敏对 sum、ratio、同比、占比和误差指标的污染机制，建立行级还原后再聚合的可复现分析原则。
-- 在 S&P Global / IHS Markit 实习中使用 Python / SQL Server 构建汽车市场与评论数据管道，维护 2000+ 款车型、10 万+ 条评论数据资产，支持市场分析报告。
+- 在 S&P Global / IHS Markit 实习中使用 Python 爬虫 / SQL Server 构建汽车市场与评论数据管道，维护 2000+ 款车型、10 万+ 条评论数据资产，支持市场分析报告。
 
 不建议写：
 
@@ -880,7 +910,7 @@ LSTM 情感分析素材：
 
 推荐优先级：
 
-1. SaaS Copilot / Dify + FastAPI Adapter。
+1. SaaS Copilot / LLM Workflow + FastAPI Adapter。
 2. 合同审核 LLM / OCR / RAG。
 3. AI coding 工程化工作流。
 4. 预测服务化作为 ML + backend 结合点。
@@ -930,33 +960,31 @@ LSTM 情感分析素材：
 
 ## 9.1 需要你确认的事实
 
-- 第七在线当前岗位名称、入职时间、公司名称是否可公开。
-- 新品预测项目中你的职责能否写“主导”。
-- 新品预测是否已上线、验收或仅为 POC / 分析项目。
-- 款色样本量、订单行数、销售行数、商品数量。
-- baseline 与模型实际指标，是否有可公开数值。
+- 新品预测项目正式简历中是否写“主导”的具体边界：数据口径 / 建模验证 / 服务化 / 业务解释。
+- 新品预测的上线范围：已形成上层业务系统可调用的服务化成果，但是否可写“上线”需看公司口径。
+- 款色数、订单行数、销售行数、商品数量。
+- Top-K 命中率或排序相关性的具体数值。
 - 是否实际采用 LightGBM / GBDT，还是目前只是方案和报告解释。
-- 预测服务化实际使用的框架：Flask / FastAPI / Celery / Redis / MongoDB / Docker 中哪些已经落地。
-- SaaS Copilot 是否可以写“主导”，是否进入正式产品或仍是 MVP / demo。
-- MP Copilot 的真实页面、接口数量、知识库规模、Dify Workflow 节点数。
-- 合同审核项目中你具体负责的模块和可公开程度。
+- MP Copilot 的真实页面、接口数量、知识库规模、Workflow 节点数。
 - S&P 实习中 2000+ 车型、10 万+ 评论、6 个月、3 份报告这些数字是否准确。
+- S&P 情感分析和 OCR 是否能找到原始评估记录；找不到就不写模型 / OCR 准确率。
 
 ## 9.2 当前不建议写入正式简历的内容
 
 - 99.9% availability。
 - 推理时间从秒级到毫秒级。
 - 日均百万级数据存取。
-- 显著提升新品预测准确率。
+- 不带 POC 评估口径写“显著提升新品预测准确率”。
 - 大幅降本增效。
 - 完整生产级 Agent 自动化业务操作。
 - 金融量化策略、因子研究、交易系统。
-- 模型准确率、OCR 准确率、合同审核准确率等无证据数字。
+- S&P 情感分析模型准确率、OCR 准确率等无证据数字。
+- 合同审核精确准确率只放在私有投递版，且必须限定为项目评测口径，不能写成通用法律判断准确率。
 
 ## 9.3 后续可补充素材
 
 - 新品预测：一张字段字典、一张样本构建流程图、一张训练验证切分图、一张指标对比表。
-- Copilot：接口 schema、示例 request / response、Dify Workflow 截图、answer-quality checklist。
+- Copilot：接口 schema、示例 request / response、Workflow 截图、answer-quality checklist。
 - 合同审核：合同解析流程图、风险类型列表、RAG 引用样例。
 - S&P：数据库表结构、数据管道流程、LSTM 训练记录或评估结果。
 - AI coding：一个实际 PR / commit 案例，说明 AI 参与了什么、人工 review 修正了什么、测试如何验证。
