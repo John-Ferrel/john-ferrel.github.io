@@ -9,10 +9,10 @@ tags:
   - SFTPGo
   - RAG
 draft: false
-created: 2026-06-09
-modified: 2026-06-09
+created: 2026-06-10 00:41
+modified: 2026-06-16 18:59
 ---
-上一篇我记录了一个比较轻量的知识库冷启动方案：用 OpenCode Web 作为知识库草稿整理工作台，用 Git 管理知识源文件，用 AGENTS.md / skills / commands / permissions 约束格式、流程和安全边界。
+上一篇[[Building KnowledgeBase with Opencode]]我记录了一个比较轻量的知识库冷启动方案：用 OpenCode Web 作为知识库草稿整理工作台，用 Git 管理知识源文件，用 AGENTS.md / skills / commands / permissions 约束格式、流程和安全边界。
 
 当时的核心链路是：
 
