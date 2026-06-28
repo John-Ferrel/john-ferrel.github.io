@@ -1,3 +1,10 @@
+---
+title: AGENTS
+draft: true
+tags:
+created: 2026-06-29 00:00
+modified: 2026-06-28 23:59
+---
 # AGENTS.md
 
 This is a Quartz personal technical blog. Content lives in this directory.
