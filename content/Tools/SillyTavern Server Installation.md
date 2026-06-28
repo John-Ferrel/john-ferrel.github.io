@@ -26,7 +26,7 @@ modified: 2026-04-14 21:52
 
 SillyTavern 官方支持 multi-user, 但也明确提醒其用户隔离不是强安全边界, 且不建议直接将实例暴露到互联网. 
 
-SillyTavern 官方文档: [SillyTavern Documentation](https://docs.sillytavern.app/administration/multi-user/?utm_source=chatgpt.com "Multi-user mode | docs.ST.app")
+SillyTavern 官方文档: [SillyTavern Documentation](https://docs.sillytavern.app/administration/multi-user/)
 
 ---
 
@@ -427,7 +427,7 @@ http://10.xx.xx.1:8000
 - 单独密码
 - 不共用账号
 
-Ubuntu 官方 WireGuard 文档也把“新增 peer”作为常规操作. ([Ubuntu](https://ubuntu.com/server/docs/how-to/wireguard-vpn/common-tasks/?utm_source=chatgpt.com "Common tasks in WireGuard VPN"))
+Ubuntu 官方 WireGuard 文档也把“新增 peer”作为常规操作. ([Ubuntu](https://ubuntu.com/server/docs/how-to/wireguard-vpn/common-tasks/))
 
 ---
 
@@ -600,4 +600,3 @@ sudo apt update
 ```bash
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
-

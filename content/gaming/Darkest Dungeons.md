@@ -3,7 +3,7 @@ title: Darkest Dungeons
 draft: false
 tags:
   - game
-  - DarkestDungeons
+  - darkest-dungeons
 created: 2025-12-27 22:36
 modified: 2025-12-27 22:36
 ---

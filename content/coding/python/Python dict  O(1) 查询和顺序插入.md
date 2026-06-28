@@ -1,8 +1,7 @@
 ---
 title: Python dict  O(1) 查询和顺序插入
-date: 2026-05-13
 tags:
-  - Python
+  - python
 draft: false
 created: 2026-05-13 19:45
 modified: 2026-05-13 19:46
@@ -21,7 +20,7 @@ d["c"] = 3
 
 print(d)
 # {'a': 1, 'b': 2, 'c': 3}
-````
+```
 
 这里的“有序”指的是 **插入顺序**，不是 key 的排序顺序。
 

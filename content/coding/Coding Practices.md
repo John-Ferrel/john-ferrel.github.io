@@ -92,7 +92,7 @@ def max_sub_list(lst:list):
 	if n == 0: return 0
 	if n == 1: return lst[0]
 	
-	max_ending_here = min_ending_here = global_max = nums[0]
+	max_ending_here = min_ending_here = global_max = lst[0]
 	
 	for i in range(1, n):
 		num = lst[i]
@@ -101,7 +101,7 @@ def max_sub_list(lst:list):
 					max_ending_here * num,
 					min_ending_here * num)
 		max_ending_here = max(candidates)
-		min_ending_hrer = min(candidates)
+		min_ending_here = min(candidates)
 		
 		global_max = max(global_max, max_ending_here)
 	

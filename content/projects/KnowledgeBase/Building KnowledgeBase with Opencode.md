@@ -1,11 +1,11 @@
 ---
 title: Building KnowledgeBase with Opencode
 tags:
-  - AICoding
-  - OpenCode
-  - KnowledgeBase
-  - SaaSCopilot
-  - RAG
+  - ai-coding
+  - opencode
+  - knowledge-base
+  - saas-copilot
+  - rag
 draft: false
 created: 2026-06-08 23:18
 modified: 2026-06-08 23:43
@@ -19,6 +19,8 @@ modified: 2026-06-08 23:43
 > 用 OpenCode Web 作为知识库内容生产工作台，让业务同事通过浏览器整理文档；用 Git 管理知识源文件；用 AGENTS.md / skills / commands / permissions 约束格式、流程和安全边界；后续再把 approved 文档导入 Dify 或向量库
 
 这篇记录主要写部署方案。
+
+后续记录：[[Building KnowledgeBase with OpenCode 2 - Docker and SFTPGo]]、[[Building KnowledgeBase with OpenCode 3 - CC Connect]]。
 
 ---
 

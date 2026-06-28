@@ -3,7 +3,7 @@ title: Build Your Own Blog in Minutes with Quartz 4
 draft: false
 tags:
   - blog
-  - "#quartz"
+  - quartz
 created: 2025-12-11 22:01
 modified: 2025-12-11 22:12
 ---

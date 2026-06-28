@@ -1,15 +1,25 @@
 ---
-title: Hello World!
+title: John Ferrel
 draft: false
 tags:
 created: 2025-12-11 22:12
-modified: 2025-12-24 22:13
+modified: 2026-06-28 23:50
 ---
-Hi all!
+# John Ferrel
 
-Wellcome to my blog.
+I write about practical AI engineering, knowledge workflows, forecasting, and Python tooling.
 
-Here's some posts you may like.
+This site is a collection of technical notes from projects, experiments, and long-term learning.
 
-[[Build Your Own Blog in Minutes with Quartz 4]]
+## Featured Notes
 
+- [[Building KnowledgeBase with Opencode]]
+- [[Building KnowledgeBase with OpenCode 2 - Docker and SFTPGo]]
+- [[Building KnowledgeBase with OpenCode 3 - CC Connect]]
+- [[Agent and Skills Development]]
+- [[为什么时序预测不再强调多重共线性]]
+- [[Lightweight cicd for intranet saas-copilot]]
+
+## Browse
+
+- [[Tags]]

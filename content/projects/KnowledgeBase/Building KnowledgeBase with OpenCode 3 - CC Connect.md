@@ -1,19 +1,18 @@
 ---
 title: Building KnowledgeBase with OpenCode 3 - CC Connect
-date: 2026-06-11
 tags:
-  - OpenCode
+  - opencode
   - cc-connect
-  - Agent
-  - KnowledgeBase
-  - Feishu
-  - WeChat
-  - AICoding
+  - agent
+  - knowledge-base
+  - feishu
+  - wechat
+  - ai-coding
 draft: false
 created: 2026-06-14 22:37
 modified: 2026-06-16 18:59
 ---
-前两篇[[Building KnowledgeBase with OpenCode 2 - Docker and SFTPGo]]主要讨论了如何把 OpenCode 用作知识库工程化工作台：通过目录结构、权限配置、文档约束和工作流，把一个“文档项目”变成 Agent 可读、可改、可审查的 KnowledgeBase。
+前两篇[[Building KnowledgeBase with Opencode]]和[[Building KnowledgeBase with OpenCode 2 - Docker and SFTPGo]]主要讨论了如何把 OpenCode 用作知识库工程化工作台：通过目录结构、权限配置、文档约束和工作流，把一个“文档项目”变成 Agent 可读、可改、可审查的 KnowledgeBase。
 
 这一篇稍微往外扩一步：**如果我们不只想在终端或 Web UI 里使用 OpenCode，而是希望它能通过微信、飞书等协作平台被调用.**
 
@@ -1028,4 +1027,3 @@ Web UI / IDE / 专门的 Agent 控制台
 所以，这篇虽然来自个人服务器部署，但它也讨论的是一个更通用的问题：
 
 > 如何把 OpenCode 从“开发者本地工具”变成“团队协作平台里的 Agent Runtime”。
-

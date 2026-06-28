@@ -1,18 +1,20 @@
 ---
 title: Building KnowledgeBase with OpenCode 2 - Docker and SFTPGo
 tags:
-  - AICoding
-  - OpenCode
-  - KnowledgeBase
-  - SaaSCopilot
-  - Docker
-  - SFTPGo
-  - RAG
+  - ai-coding
+  - opencode
+  - knowledge-base
+  - saas-copilot
+  - docker
+  - sftpgo
+  - rag
 draft: false
 created: 2026-06-10 00:41
 modified: 2026-06-16 18:59
 ---
 上一篇[[Building KnowledgeBase with Opencode]]我记录了一个比较轻量的知识库冷启动方案：用 OpenCode Web 作为知识库草稿整理工作台，用 Git 管理知识源文件，用 AGENTS.md / skills / commands / permissions 约束格式、流程和安全边界。
+
+下一篇：[[Building KnowledgeBase with OpenCode 3 - CC Connect]]。
 
 当时的核心链路是：
 
@@ -908,4 +910,3 @@ Git review 解决知识治理
 
 > 如果要给同事使用，OpenCode Web 不应该裸跑在宿主机上。  
 > 它更适合作为一个被 Docker 限制在 `/workspace` 内的项目级 agent。
-

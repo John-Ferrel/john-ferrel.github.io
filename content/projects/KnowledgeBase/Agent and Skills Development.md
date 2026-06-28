@@ -1,6 +1,5 @@
 ---
 title: Agent and Skills Development
-date: 2026-06-17
 tags:
   - ai-agent
   - opencode
