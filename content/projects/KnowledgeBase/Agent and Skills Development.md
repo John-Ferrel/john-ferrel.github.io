@@ -8,7 +8,7 @@ tags:
   - skills
 draft: false
 created: 2026-06-17 23:54
-modified: 2026-06-17 23:54
+modified: 2026-07-04 00:00
 ---
 最近我开始整理公司内部的 Agent Workspace，并准备正式开发 Agent 和 Skills。
 Agent 和 Skill 是两层不同的抽象。
@@ -24,7 +24,7 @@ Agent 负责角色、职责、边界和权限
 Skill 负责某类任务的标准流程
 Tool / Script 负责真实执行动作
 Permission 负责控制哪些操作允许、询问或禁止
-````
+```
 
 ## 1. 基本模型
 
@@ -44,13 +44,11 @@ Primary Agent 理解任务
 输出结果
 ```
 
-这里的关键是：  
-Agent 不应该每次都重新发明工作流程。真正稳定的能力应该沉淀到 Skill 里；真正可执行、可测试、可复用的动作应该沉淀到 script 或 tool 里。
+稳定的能力应该沉淀到 Skill 里；可执行、可测试、可复用的动作应该沉淀到 script 或 tool 里。
 
 ## 2. AGENTS.md：项目级宪法
 
-`AGENTS.md` 是项目里的“宪法”, 需要告诉所有 Agent：
-特别的, 也可以给出一些比较抽象的约束, 比如 superpowers的AGENTS.md 中, 写这个项目有95%的概率拒绝pr, 因此必须更加谨慎。
+`AGENTS.md` 是项目里的“宪法”, 需要告诉所有 Agent 项目边界、目录结构、权限规则和交付要求。它也可以写一些抽象但重要的约束，比如某个项目 review 极其严格，因此必须更加谨慎。
 
 ```text
 这个项目是什么
@@ -111,7 +109,7 @@ Agent 可以理解成一个“工种配置”。
 Agent = 角色定位 + 工作边界 + 默认行为 + 可用工具 + 权限 + 模型偏好
 ```
 
-它不是越全能越好。一个好的 Agent 应该知道自己负责什么，也知道自己不应该做什么。
+Agent 不需要追求全能。一个好的 Agent 应该知道自己负责什么，也知道自己不应该做什么。
 
 例如公司知识库项目里，可以先设计几个 Agent：
 
@@ -273,7 +271,7 @@ The SOP is complete only if:
 - The document has a stable location under `docs/`.
 ```
 
-这类 Skill 的作用是让 Agent 每次处理同类任务时都有稳定流程，而不是临场发挥。
+这个例子不用一开始写得很复杂。重点是让 Agent 每次处理同类任务时都有稳定流程。
 
 ## 6. Agent 与 Skill 的区别
 
@@ -374,7 +372,7 @@ Permission：
             └── SKILL.md
 ```
 
-这里最重要的是边界清楚：
+目录边界要清楚：
 
 ```text
 docs/ 是正式内容
@@ -418,7 +416,7 @@ kb-release-note
 kb-security-review
 ```
 
-关键是**真实任务打磨 Agent 体系。**
+Agent 体系要靠真实任务打磨。
 
 ## 9. 我的开发顺序
 
@@ -433,7 +431,7 @@ kb-security-review
 6. 再抽象出文档规范化、RAG chunk、交付物导出等 Skills
 ```
 
-这样做的好处是，每一步都能产生真实价值, 在实际工作流中逐步沉淀能力。
+这个顺序的重点是让每一步都产生真实价值, 再从实际工作流中沉淀能力。
 
 ## 10. 总结
 

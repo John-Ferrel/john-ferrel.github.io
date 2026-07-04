@@ -1,5 +1,5 @@
 ---
-title: Building KnowledgeBase with Opencode
+title: Building KnowledgeBase with OpenCode
 tags:
   - ai-coding
   - opencode
@@ -8,17 +8,17 @@ tags:
   - rag
 draft: false
 created: 2026-06-08 23:18
-modified: 2026-06-08 23:43
+modified: 2026-07-04 00:00
 ---
-最近我在做公司的 SaaS Copilot, 需要设计知识库。我重新思考企业知识库和 SaaS Copilot 的关系。
+最近我在做公司的 SaaS Copilot, 需要设计知识库。最初的想法比较传统：做协同文档系统、文档处理管线，再导入 Dify 或向量数据库，供 agents / workflow 调用。
 
-最初的想法比较传统：做一个协同文档系统，接文档处理管线，最后导入 Dify 或向量数据库，供 agents / workflow 调用。我对这个想法很满意, 但是开发周期比较长, 尤其是如果要考虑业务同事的使用体验和冷启动, 完整开发一套“协同云文档 + 审核流 + RAG 后台”可能不太能被接受。
+这个方向完整，但冷启动太重。尤其要考虑业务同事的使用体验时，第一版就做“协同云文档 + 审核流 + RAG 后台”不太现实。
 
 于是我想到一个更轻的方案：
 
 > 用 OpenCode Web 作为知识库内容生产工作台，让业务同事通过浏览器整理文档；用 Git 管理知识源文件；用 AGENTS.md / skills / commands / permissions 约束格式、流程和安全边界；后续再把 approved 文档导入 Dify 或向量库
 
-这篇记录主要写部署方案。
+这篇记录的是第一版 POC：先用 OpenCode Web + Git repo 跑通知识库草稿生产流程。
 
 后续记录：[[Building KnowledgeBase with OpenCode 2 - Docker and SFTPGo]]、[[Building KnowledgeBase with OpenCode 3 - CC Connect]]。
 
@@ -26,7 +26,7 @@ modified: 2026-06-08 23:43
 
 ## 1. 目标
 
-当前目标不是做一个完整的企业知识库系统，而是先搭一个内部 POC：
+当前目标是先搭一个内部 POC：
 
 ```text
 同事通过浏览器访问 OpenCode Web
@@ -51,13 +51,13 @@ Dify/RAG     = 知识服务层
 Java/Python  = SaaS Copilot 产品控制层
 ```
 
-所以，OpenCode Web 不是正式知识库门户(因为呈现没有严谨的文档结构)，也不是多人协同文档系统(也不是成熟的多人协同文档系统)。它更像是一个 agent-assisted authoring workspace。
+OpenCode Web 的定位是 agent-assisted authoring workspace，负责草稿生产和 review 前整理。
 
 ---
 
 ## 2. 整体架构
 
-我希望最终形成这样的结构：
+长期结构可以分成知识生产侧和 Copilot 调用侧：
 
 ```text
 知识生产侧：
@@ -88,7 +88,7 @@ Python Adapter 统一 response schema
 Java UI 展示
 ```
 
-目前只部署第一段：
+当前 POC 只部署第一段：
 
 ```text
 OpenCode Web
@@ -107,7 +107,7 @@ Dify 调 OpenCode
 OpenCode 调 Dify
 ```
 
-这可以避免一开始架构过度复杂。
+这样可以先验证“业务材料能不能低成本变成可 review 的 Markdown 草稿”，避免一开始架构过度复杂。
 
 ---
 
@@ -519,7 +519,7 @@ commands
   给同事提供可直接触发的入口，比如 /kb-start、/create-faq、/review-kb。
 ```
 
-这样，OpenCode Web 就不只是一个聊天窗口，而是一个被规则和工作流约束过的知识库工作台。
+这样，OpenCode Web 会变成一个有规则和工作流约束的知识库工作台。
 
 ---
 
@@ -679,7 +679,7 @@ EOF
 
 ### 8.5 增加 /kb-start 开场命令
 
-除了 skills，我还会加一个开场命令，降低同事第一次使用的门槛。
+除了 skills，我还加了一个开场命令，降低同事第一次使用的门槛。
 
 目录：
 
@@ -1140,7 +1140,7 @@ http://服务器IP:4096
 **用途**：
 
 ```text
-这是知识库草稿整理工作台，不是正式知识库门户。
+这是知识库草稿整理工作台，用于生成 review 前的 Markdown 草稿。
 ```
 
 **请做**：
@@ -1244,9 +1244,7 @@ sudo systemctl restart opencode-kb-web
 
 ## 16. 为什么暂时不装 MCP / LSP / 插件
 
-第一版我不准备安装 MCP、LSP 或社区插件。
-
-原因很简单：当前工作台只需要完成这些事：
+第一版不准备安装 MCP、LSP 或社区插件。当前工作台只需要完成这些事：
 
 ```text
 读写 Markdown；
@@ -1257,13 +1255,7 @@ sudo systemctl restart opencode-kb-web
 进入人工 review。
 ```
 
-内置工具、AGENTS.md、skills 和 permissions 已经足够。
-
-MCP 适合后续接外部系统，比如 Dify dataset、内部只读 API、Jira、Confluence、向量库等。但第一版接 MCP 会显著增加权限和维护复杂度。
-
-LSP 更适合代码项目。这个 repo 主要是 Markdown、少量 Python 脚本和 JSON schema，不需要一开始就接 LSP。
-
-插件也一样，后续可以用来做 session logging、secret protection、自动通知、质量检查 hook。但第一版优先保证部署简单、权限清楚、流程可控。
+内置工具、AGENTS.md、skills 和 permissions 已经足够。MCP 后续可以接 Dify dataset、内部只读 API、Jira、Confluence、向量库等；LSP 更适合代码项目；插件可以做 session logging、secret protection、自动通知或质量检查 hook。但第一版优先保证部署简单、权限清楚、流程可控。
 
 ---
 
@@ -1299,7 +1291,7 @@ Java SaaS 页面展示；
 
 ## 18. 总结
 
-这个方案的核心是：
+这个方案可以概括成：
 
 > 用 OpenCode Web 降低知识库冷启动成本；  
 > 用 AGENTS.md / skills / commands / permissions 约束内容生产和工作流：  

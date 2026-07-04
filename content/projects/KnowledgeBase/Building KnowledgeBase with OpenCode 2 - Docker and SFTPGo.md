@@ -10,36 +10,20 @@ tags:
   - rag
 draft: false
 created: 2026-06-10 00:41
-modified: 2026-06-16 18:59
+modified: 2026-07-04 00:00
 ---
 上一篇[[Building KnowledgeBase with Opencode]]我记录了一个比较轻量的知识库冷启动方案：用 OpenCode Web 作为知识库草稿整理工作台，用 Git 管理知识源文件，用 AGENTS.md / skills / commands / permissions 约束格式、流程和安全边界。
 
 下一篇：[[Building KnowledgeBase with OpenCode 3 - CC Connect]]。
 
-当时的核心链路是：
+上一篇的方案可以支撑第一版 POC，但继续往前走时，我遇到了两个新的问题：
 
 ```text
-同事通过浏览器访问 OpenCode Web
-        ↓
-粘贴业务说明、会议纪要、页面截图、指标解释
-        ↓
-OpenCode 按规则整理成 Markdown 草稿
-        ↓
-草稿进入 review/pending/
-        ↓
-人工审核后进入 knowledge/ 或 review/approved/
-        ↓
-后续导入 Dify / 向量库 / SaaS Copilot
-```
-
-这个方案适合作为第一版 POC，但继续往前走时，我遇到了两个新的问题：
-
-```text
-1. OpenCode Web 本身不是文件上传系统
+1. OpenCode Web 缺少文件上传入口
 2. OpenCode Web 的权限范围接近运行它的 Linux 用户
 ```
 
-也就是说，如果我只是把 OpenCode Web 直接跑在服务器上，业务同事确实可以通过浏览器整理知识库草稿，但他们没有一个自然的入口把 raw files 放进 workspace；另一方面，如果 OpenCode Web 是用宿主机上的普通用户甚至 root 启动的，它就不再是一个“项目级 agent”，而更接近一个“服务器级 agent”。
+OpenCode Web 可以整理知识库草稿，但缺少自然的 raw files 上传入口；直接裸跑在宿主机上，也会让它的权限范围接近运行它的 Linux 用户。
 
 所以这篇是上一篇的补充：**用 Docker 封装 OpenCode Web，并用 SFTPGo WebClient 提供文件上传入口。**
 
@@ -53,24 +37,7 @@ OpenCode Web + SFTPGo WebClient 的项目级知识库 agent 工作区
 
 ## 1. 这次升级解决什么问题
 
-第一版的 OpenCode Web 方案主要解决：
-
-```text
-知识整理
-草稿生成
-规则约束
-人工 review
-```
-
-但它没有很好解决：
-
-```text
-raw files 如何进入 workspace
-OpenCode Web 如何避免访问整个服务器
-如何让这个 agent 只服务于 company-kb 项目
-```
-
-所以这次升级的目标是：
+这次升级的目标是：
 
 ```text
 1. 给同事一个浏览器文件上传入口
@@ -118,20 +85,12 @@ SFTPGo container:
   upload dir  ->  /srv/company-kb/inbox/uploaded-docs/
 ```
 
-这个变化很关键。
+之前 OpenCode Web 直接运行在宿主机上，理论上可能接触到服务器上的更多路径。现在它运行在 Docker 容器里，只挂载 `/srv/company-kb` 到容器内的 `/workspace`。
 
-之前 OpenCode Web 直接运行在宿主机上，它理论上可能接触到服务器上的更多路径。现在它运行在 Docker 容器里，并且只挂载 `/srv/company-kb` 到容器内的 `/workspace`。
-
-也就是说，这个 agent 的工作范围变成：
+这个 agent 的工作范围收敛到：
 
 ```text
 /workspace
-```
-
-而不是：
-
-```text
-整台服务器
 ```
 
 这更接近我想要的“项目级 agent”。
@@ -506,7 +465,7 @@ opencode auth login
 /models
 ```
 
-这里有一个重要细节：**Docker 方案下，OpenCode Web 中应该选择 `/workspace` 作为项目工作区，而不是宿主机路径 `/srv/company-kb`。**
+这里有一个重要细节：**Docker 方案下，OpenCode Web 中应该选择 `/workspace` 作为项目工作区。**
 
 宿主机上的：
 
@@ -531,7 +490,7 @@ AGENTS.md 没加载
 skills 行为不稳定
 ```
 
-这不是 commands 或 skills 本身的问题，而是当前 session 打开的 workspace 不对。
+根因通常是当前 session 打开的 workspace 不对。
 
 ---
 
@@ -601,7 +560,7 @@ cd /srv/company-kb
 git status
 ```
 
-这不是 Git repo 丢了，也不是 Docker 挂载不一致，而是 Git 的安全机制。
+这是 Git 的安全机制，不代表 repo 丢失或 Docker 挂载不一致。
 
 不过这样, Git 不能操作的问题还是没有解决.
 
@@ -680,7 +639,7 @@ Uploaded files should be treated as raw materials, not approved knowledge.
 ```text
 SFTPGo WebClient：上传原始文件
 OpenCode Web：整理知识库草稿
-````
+```
 
 上传文件请使用：
 
@@ -729,13 +688,13 @@ The message should include:
 6. What the user must not upload or ask you to do
 7. Three recommended example prompts
 8. A reminder that uncertain information should go into Open Questions
-````
+```
 
 ---
 
 ## 15. 输入文件范围
 
-因为 OpenCode Web 不是完整文档解析管线，所以需要告诉同事“哪些文件适合直接使用”。
+OpenCode Web 缺少完整文档解析管线，所以需要告诉同事“哪些文件适合直接使用”。
 
 建议支持：
 
@@ -834,9 +793,7 @@ python3 scripts/validate_kb.py
 
 ## 17. 当前方案的边界
 
-升级后，这套方案更安全、更完整，但它仍然不是正式企业知识库系统。
-
-它适合：
+升级后，这套方案更适合内部 POC 和小范围试用：
 
 ```text
 内部 POC
@@ -846,7 +803,7 @@ python3 scripts/validate_kb.py
 FAQ / 指标定义 / 页面说明沉淀
 ```
 
-它不适合直接承担：
+它仍然承担不了正式企业知识库系统的完整职责：
 
 ```text
 正式多人协同文档系统
@@ -856,7 +813,7 @@ FAQ / 指标定义 / 页面说明沉淀
 多租户 SaaS 后台
 ```
 
-也就是说，SFTPGo 和 Docker 解决的是：
+SFTPGo 和 Docker 主要解决：
 
 ```text
 文件上传入口
@@ -864,7 +821,7 @@ FAQ / 指标定义 / 页面说明沉淀
 运行边界
 ```
 
-但不解决：
+仍然需要其他机制处理：
 
 ```text
 知识审核
@@ -906,7 +863,6 @@ AGENTS.md / skills / commands 解决工作流约束
 Git review 解决知识治理
 ```
 
-主要解决的问题是是：
+主要结论：
 
-> 如果要给同事使用，OpenCode Web 不应该裸跑在宿主机上。  
-> 它更适合作为一个被 Docker 限制在 `/workspace` 内的项目级 agent。
+> 给同事使用的 OpenCode Web，应该作为被 Docker 限制在 `/workspace` 内的项目级 agent 运行。

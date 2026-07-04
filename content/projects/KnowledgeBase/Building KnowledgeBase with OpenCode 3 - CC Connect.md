@@ -10,186 +10,57 @@ tags:
   - ai-coding
 draft: false
 created: 2026-06-14 22:37
-modified: 2026-06-16 18:59
+modified: 2026-07-04 00:00
 ---
-前两篇[[Building KnowledgeBase with Opencode]]和[[Building KnowledgeBase with OpenCode 2 - Docker and SFTPGo]]主要讨论了如何把 OpenCode 用作知识库工程化工作台：通过目录结构、权限配置、文档约束和工作流，把一个“文档项目”变成 Agent 可读、可改、可审查的 KnowledgeBase。
 
-这一篇稍微往外扩一步：**如果我们不只想在终端或 Web UI 里使用 OpenCode，而是希望它能通过微信、飞书等协作平台被调用.**
+前两篇 [[Building KnowledgeBase with Opencode]] 和 [[Building KnowledgeBase with OpenCode 2 - Docker and SFTPGo]] 主要讨论如何把 OpenCode project / workspace 用作知识库工程化工作台。
 
-因为是周末的探索工作, 这次实践是在个人服务器, 目标是在不引入过重 Docker 架构的情况下，部署一套轻量的结构：
+这一篇继续往外扩一步：用 cc-connect 把 OpenCode 接到微信 / 飞书，让 Agent 可以从 IM 入口接收任务。
+
+记录一条最小可用路径：
 
 ```text
 微信 / 飞书
   ↓
 cc-connect
   ↓
-OpenCode
-  ↓
-个人 / 团队工作区
-  ↓
-LLM Provider
-```
-
----
-
-## 1. 为什么需要把 OpenCode 接入微信 / 飞书？
-
-OpenCode 原本更像一个开发者工作台：
-
-```text
-SSH / Terminal / TUI / IDE
-  ↓
-OpenCode
-  ↓
-项目目录
-```
-
-这种方式适合深度开发、调试、查看 diff、运行测试。但它不适合所有场景。
-
-在公司知识库或内部 Agent 场景中，很多用户并不是开发者，他们更习惯：
-
-- 在飞书群里提问；
-- 在微信里远程派任务；
-- 上传一个文件，让 Agent 整理；
-- 让 Agent 检查知识库目录；
-- 让 Agent 生成一份交付文档；
-- 在群里讨论后让 Agent 执行明确任务。
-
-这就需要一个“协作平台到 Agent Runtime 的Bridge”。
-
-cc-connect 扮演的正是这个角色：
-
-```text
-Chat Platform Gateway
-  ↓
-Session Router
-  ↓
-Agent Adapter
-  ↓
-OpenCode Runtime
-```
-
-它本身不是模型，也不是知识库系统，而是把微信、飞书、Telegram、Slack 等平台的消息转发给本地或服务器上的 coding agent。
-
----
-
-## 2. 基础架构
-
-最终结构可以理解为：
-
-```text
-用户
-  ↓
-微信 / 飞书 / 群聊
-  ↓
-cc-connect
-  ↓
-OpenCode
+OpenCode project
   ↓
 workspace
   ↓
 AGENTS.md / Skills / opencode.jsonc
-  ↓
-LLM Provider
 ```
 
-其中每一层职责不同。
+参考资料：
 
-### 2.1 微信 / 飞书：用户入口
+* [cc-connect README](https://github.com/chenhg5/cc-connect)
+* [cc-connect INSTALL.md](https://github.com/chenhg5/cc-connect/blob/main/INSTALL.md)
+* [飞书接入指南](https://github.com/chenhg5/cc-connect/blob/main/docs/feishu.md)
+* [微信个人号接入指南](https://github.com/chenhg5/cc-connect/blob/main/docs/weixin.md)
+* [config.example.toml](https://github.com/chenhg5/cc-connect/blob/main/config.example.toml)
 
-微信和飞书负责：
+## 1. 目标
 
-- 接收用户消息；
-- 接收附件；
-- 展示 Agent 回复；
-- 在群聊中通过 @bot 触发任务；
-- 作为轻量远程控制入口。
+目标：让微信 / 飞书成为 OpenCode project 的任务入口。
 
-
-### 2.2 cc-connect：消息桥与会话路由
-
-cc-connect 负责：
-
-- 连接不同 IM 平台；
-- 判断消息来自哪个用户、哪个平台、哪个群；
-- 根据配置找到对应 project；
-- 调用 OpenCode；
-- 把结果发回聊天平台；
-- 维护会话关系。
-
-它可以一个进程管理多个项目：
-
-```toml
-[[projects]]
-name = "personal-sandbox"
-
-[projects.agent]
-type = "opencode"
-
-[projects.agent.options]
-work_dir = "/srv/personal-agent/projects/sandbox"
-
-[[projects.platforms]]
-type = "weixin"
-
-[[projects.platforms]]
-type = "feishu"
-```
-
-这意味着一个 `personal-sandbox` 可以同时接微信和飞书，也可以再增加更多平台。
-
-### 2.3 OpenCode：真正的 Agent Runtime
-
-OpenCode 负责：
-
-- 读取工作区；
-- 理解 `AGENTS.md`；
-- 加载 Skills；
-- 调用模型；
-- 读写文件；
-- 调用 shell；
-- 执行开发、文档、分析任务。
-
-模型选择、工具权限和工作区规则不应该主要写在 cc-connect 里，而应该由 OpenCode 项目配置管理。
-
-### 2.4 workspace：真实工作环境
-
-工作区是 Agent 的操作对象，例如：
+验收标准：
 
 ```text
-/srv/personal-agent/projects/sandbox/
-├── AGENTS.md
-├── opencode.jsonc
-├── inbox/
-├── work/
-├── notes/
-├── deliverables/
-├── archive/
-├── tmp/
-└── .opencode/
-    └── skills/
+1. 微信或飞书可以触发 OpenCode
+2. cc-connect 根据消息来源路由到指定 project
+3. OpenCode 在固定 work_dir 内执行任务
+4. 模型、权限、Skills 由 OpenCode project 管理
+5. 附件或临时文件进入 workspace/inbox/
+6. 最终结果进入 workspace/deliverables/
 ```
 
-对公司知识库来说，这个 workspace 可以换成：
+链路分工很窄：cc-connect 做消息接入、用户识别和 project 路由；OpenCode 执行任务；workspace 沉淀输入、过程文件和交付物；`AGENTS.md` / Skills / `opencode.jsonc` 约束 Agent 行为。
 
-```text
-/srv/company-kb/
-├── AGENTS.md
-├── README.md
-├── START_HERE.md
-├── docs/
-├── inbox/
-├── deliverables/
-└── .opencode/
-```
+核心判断：cc-connect 只做路由层。业务逻辑、模型策略和执行边界留在 OpenCode project。
 
-也就是说，个人部署和公司知识库部署的核心差别不在链路(链路是一样的)，而是工作区内容、权限边界和组织规范。
+## 2. 部署形态
 
----
-
-## 3. 服务器资源与部署策略
-
-这次实践使用的是一台轻量个人服务器：
+我的个人服务器资源：
 
 ```text
 CPU: 4 核
@@ -199,200 +70,151 @@ CPU: 4 核
 系统: Ubuntu Server 24.04 LTS
 ```
 
-这个配置不适合本地跑大模型，但足够运行：
+这个配置足够运行 cc-connect、OpenCode、微信 / 飞书连接和远程 LLM API 调用。本地大模型不放在这台机器上。
 
-- cc-connect；
-- OpenCode；
-- 微信 / 飞书连接；
-- 少量个人工作区；
-- 远程 LLM API 调用。
-
-因此，不推荐在第一版引入 Docker。
-
-更合适的方式是：
+第一版采用轻量方案：
 
 ```text
-一个 Linux 用户 agent
+Linux user: agent
   ↓
-一个 cc-connect 进程
+cc-connect 进程
   ↓
 一个或多个 projects
   ↓
-每个 project 一个 work_dir
+每个 project 指向一个 work_dir
 ```
 
-这种方案的优点是：
+这类方案适合可信用户、小团队、低风险的文档 / 代码 / 研究类工作。陌生用户、生产运维、高敏数据和不可信代码执行，要继续上 Linux user 或容器隔离。
 
-- 部署简单；
-- 占用资源低；
-- 日志和配置容易排查；
-- 对个人或小团队可信用户足够实用。
-
-缺点是：
-
-- 不是强隔离；
-- 多个项目仍可能以同一个 Linux 用户运行；
-- 如果允许任意 shell，理论上可以访问该用户有权限访问的其他目录；
-- 需要通过权限配置、工作区规则和用户信任来约束。
-
-这类模式更适合：
+隔离等级大致是：
 
 ```text
-可信用户 + 独立目录 + 明确权限 + Git 可恢复 + Skills 审查
+session
+  只隔离聊天上下文，文件全都共用
+
+project / work_dir
+  每个项目一个目录，AGENTS.md / opencode.jsonc / Skills 分开
+
+Linux user
+  不同 Unix 用户，靠系统权限隔离
+
+Docker / Podman
+  容器级隔离，适合更不可信的场景
 ```
 
-不适合直接暴露给陌生用户或不可信外部用户。
-
----
-
-## 4. 模型配置：让 OpenCode 管模型，不让 cc-connect 管模型
-
-部署过程中遇到过一个小问题, 直接用 cc cennect的set up：
-
-OpenCode 项目里的 `opencode.jsonc` 已经配置了模型：
-
-```jsonc
-{
-  "model": "opencode-go/deepseek-v4-flash",
-  "small_model": "opencode-go/deepseek-v4-flash",
-  "enabled_providers": ["opencode-go"]
-}
-```
-
-但 cc-connect 的配置里又写了一行：
-
-```toml
-model = "opencode/deepseek-v4-flash-free"
-```
-
-结果是：
+本文采用：
 
 ```text
-直接运行 OpenCode：正常
-通过微信触发 cc-connect：失败
+project / work_dir 级别的轻量隔离
 ```
 
-原因是 cc-connect 调用 OpenCode 时使用了它自己配置中的错误模型，覆盖了工作区配置。
+## 3. 推荐目录
 
-修复方式如下：
-
-```toml
-[projects.agent.options]
-work_dir = "/srv/personal-agent/projects/sandbox"
-mode = "default"
-
-# 不要在这里重复写 model
-```
-
-原则是：
-
-> cc-connect 只负责“把消息送到哪个 OpenCode project”，不要重复管理模型。
-
-模型应该统一放在项目级：
+统一使用一个基础目录：
 
 ```text
-/srv/personal-agent/projects/sandbox/opencode.jsonc
+/srv/personal-agent/
+├── cc-connect/
+│   └── config.toml
+├── projects/
+│   └── sandbox/
+│       ├── AGENTS.md
+│       ├── opencode.jsonc
+│       ├── inbox/
+│       ├── work/
+│       ├── notes/
+│       ├── deliverables/
+│       ├── archive/
+│       ├── tmp/
+│       └── .opencode/
+│           └── skills/
+└── logs/
 ```
 
-这样未来迁移到公司知识库时也更清晰：
+创建目录：
 
-```text
-不同知识库 project
-  ↓
-不同 opencode.jsonc
-  ↓
-不同模型 / 权限 / Skills
+```bash
+sudo mkdir -p /srv/personal-agent/cc-connect
+sudo mkdir -p /srv/personal-agent/projects/sandbox
+sudo chown -R agent:agent /srv/personal-agent
 ```
 
----
+切换到 `agent` 用户：
 
-## 5. 通用 workplace 设计
-
-这次个人 workspace 最终设计为：
-
-```text
-sandbox/
-├── AGENTS.md
-├── opencode.jsonc
-├── inbox/
-├── work/
-├── notes/
-├── deliverables/
-├── archive/
-├── tmp/
-└── .opencode/
-    └── skills/
+```bash
+su - agent
 ```
 
-目录职责如下：
+进入 workspace：
 
-```text
-inbox/
-  用户上传或待处理文件
-
-work/
-  当前任务、实验、小项目
-
-notes/
-  调研、分析、过程记录
-
-deliverables/
-  最终交付文件
-
-archive/
-  已完成或废弃内容
-
-tmp/
-  可删除临时文件
-
-.opencode/skills/
-  项目级 Skills
+```bash
+cd /srv/personal-agent/projects/sandbox
+mkdir -p inbox work notes deliverables archive tmp .opencode/skills
+git init
 ```
 
-对公司知识库来说，这个结构也适用，只是命名和内容会更偏业务：
+## 4. 安装与基础验证
 
-```text
-company-kb/
-├── AGENTS.md
-├── README.md
-├── START_HERE.md
-├── docs/
-├── inbox/
-├── raw-notes/
-├── processed/
-├── deliverables/
-└── .opencode/skills/
+安装方式可以用 npm、Homebrew、release binary 或源码构建。这里用 npm：
+
+```bash
+npm install -g cc-connect
 ```
 
-核心思想是：
+确认命令可用：
 
-> 不把 Agent 当成“万能聊天框”，而要给它一个清晰的工作台。或者说, 虽然 Agent 是通用的, 但是承载Agent的工作区, 其实是专用的, 可以弱结构, 但也不能没结构。
+```bash
+cc-connect --version
+opencode --version
+```
 
----
+确认 OpenCode 已经能正常调用模型：
 
-## 6. AGENTS.md：定义工作区宪法
+```bash
+opencode auth list
+opencode models
+```
 
-`AGENTS.md` 是 OpenCode 读取项目规则的主要入口。
+在 workspace 内直接测试 OpenCode：
 
-对于 IM 接入型 Agent，`AGENTS.md` 应该至少定义：
+```bash
+cd /srv/personal-agent/projects/sandbox
 
-1. 工作区用途；
-2. 工作区边界；
-3. 可访问和不可访问目录；
-4. 多用户注意事项；
-5. 文件放置规范；
-6. 任务流程；
-7. 交付流程；
-8. cc-connect / 微信 / 飞书环境限制。
+opencode run --format json \
+  "Do not use tools. Reply exactly: OPENCODE_OK"
+```
 
-例如：
+如果这一步失败，不要继续配置 cc-connect。
+先解决 OpenCode 的 provider、API key 或 model 问题。
+
+## 5. Workspace 约束：AGENTS.md
+
+IM 入口会降低操作门槛，也会放大误操作风险。workspace 需要先写清楚边界。
+
+创建：
+
+```bash
+cd /srv/personal-agent/projects/sandbox
+nano AGENTS.md
+```
+
+示例：
 
 ```markdown
-## Workspace Boundary
+# Personal Agent Workspace
 
-The current workspace is the only permitted working area.
+This workspace is the only permitted working area.
 
-Do not access or modify:
+## Allowed working directories
+
+- inbox/
+- work/
+- notes/
+- deliverables/
+- archive/
+- tmp/
+
+## Do not access or modify
 
 - /etc
 - /root
@@ -406,212 +228,638 @@ Do not access or modify:
 - firewall configuration
 - systemd services
 
-Do not use sudo, switch users, or attempt privilege escalation.
+Do not use sudo.
+Do not switch users.
+Do not attempt privilege escalation.
+
+## Outputs
+
+When a task creates final output, place it under:
+
+deliverables/<task-name>/
+
+## Attachments
+
+Attachments received from cc-connect may be temporary.
+
+When an attachment or temporary input should be preserved:
+
+1. Copy it into inbox/YYYY-MM-DD/.
+2. Preserve the original extension.
+3. Do not overwrite existing files.
+4. Report the saved path, file size, and SHA256.
+5. Use the saved copy as the stable source file.
 ```
 
-对于公司知识库，边界还应该更严格：
+`AGENTS.md` 不能替代系统权限，但能让 OpenCode 在执行前读到项目边界。通过微信 / 飞书触发时，用户通常不会像在 TUI 里逐步确认每个动作。
 
-```markdown
-Do not modify production services.
-Do not expose client data.
-Do not move raw documents without explicit instruction.
-Do not send confidential material to external tools unless approved.
+## 6. OpenCode 配置：opencode.jsonc
+
+模型和权限放在 project 的 `opencode.jsonc`。
+
+创建：
+
+```bash
+cd /srv/personal-agent/projects/sandbox
+nano opencode.jsonc
 ```
 
-这类规则**不能**完全替代系统权限，但能显著减少 Agent 误操作。
-
----
-
-## 7. Skills：不要堆满，先做核心工作流
-
-在部署过程中, 也评估了是否直接安装大量社区 Skills。
-
-最终比较稳妥的策略是：
-
-```text
-社区 Skills:
-  Superpowers 可考虑用于软件开发流程
-
-项目本地 Skills:
-  task-intake
-  workspace-safety-review
-  research-brief
-  delivery-review
-```
-
-不要一开始安装一大包不明来源 Skills。Skills 太多反而会出现：
-
-- 规则重叠；
-- 触发混乱；
-- 与当前项目不匹配；
-- 老版本流程误导；
-- 对简单任务过度工程化。
-
-本地 Skills 更适合承担 workplace 强相关流程。
-
-### 7.1 task-intake
-
-用于较大任务开始前：
-
-```text
-识别目标
-识别输入
-确定输出
-创建 work/<task-name>/
-记录 TASK.md
-选择后续 Skills
-```
-
-### 7.2 workspace-safety-review
-
-用于高风险变更前：
-
-```text
-批量修改
-删除文件
-迁移目录
-依赖变更
-shell-heavy 操作
-```
-
-它要求 Agent 先检查：
-
-- 是否在工作区内；
-- 是否会覆盖别人文件；
-- 是否涉及密钥；
-- 是否有 rollback；
-- 是否需要用户确认。
-
-### 7.3 research-brief
-
-用于正式调研：
-
-```text
-当前信息核查
-资料来源记录
-事实 / 推理分离
-形成 notes/<topic>/brief.md
-```
-
-公司知识库场景里，这个 Skill 很适合做：
-
-- 技术选型调研；
-- 产品方案对比；
-- 客户行业资料整理；
-- 内部 FAQ 起草。
-
-### 7.4 delivery-review
-
-用于交付前检查：
-
-```text
-文件是否存在
-格式是否正确
-是否有 README
-是否包含临时文件
-是否泄露 token
-是否验证过
-```
-
-对公司知识库尤其重要，因为 Agent 生成的文件很容易混入临时路径、debug 信息或未验证内容。
-
----
-
-## 8. 权限策略：IM 场景下不要依赖 ask
-
-
-在终端 TUI 中，OpenCode 可以弹出确认：
-
-```text
-Agent wants to run command X.
-Allow / Deny?
-```
-
-但在微信或飞书里，这个交互不稳定，也不自然。
-
-尤其通过 cc-connect 调用 OpenCode 时，很多 `ask` 权限可能变成：
-
-```text
-需要确认
-  ↓
-IM 端没有完整确认回路
-  ↓
-工具调用失败
-  ↓
-任务中止
-```
-
-因此，IM 接入型 OpenCode 项目更适合采用：
-
-```text
-明确安全的操作：allow
-明确危险的操作：deny
-尽量少用 ask
-```
-
-例如：
+示例：
 
 ```jsonc
-"permission": {
-  "*": "allow",
+{
+  "$schema": "https://opencode.ai/config.json",
 
-  "external_directory": "deny",
-  "question": "deny",
+  "model": "opencode-go/deepseek-v4-flash",
+  "small_model": "opencode-go/deepseek-v4-flash",
+  "enabled_providers": ["opencode-go"],
 
-  "bash": {
+  "permission": {
     "*": "allow",
 
-    "sudo *": "deny",
-    "systemctl *": "deny",
-    "service *": "deny",
-    "journalctl *": "deny",
+    "read": {
+      "*": "allow",
 
-    "apt *": "deny",
-    "apt-get *": "deny",
-    "docker *": "deny",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.pem": "deny",
+      "*.key": "deny",
+      "**/id_rsa": "deny",
+      "**/id_ed25519": "deny",
+      "**/*token*": "deny",
+      "**/*secret*": "deny",
+      "**/*credential*": "deny"
+    },
 
-    "rm -rf *": "deny",
-    "git reset --hard*": "deny",
-    "git clean *": "deny",
-    "git push --force*": "deny",
+    "edit": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "skill": "allow",
+    "lsp": "allow",
+    "task": "allow",
 
-    "cc-connect daemon *": "deny",
-    "cc-connect weixin *": "deny"
+    "websearch": "allow",
+    "webfetch": "allow",
+
+    "external_directory": "deny",
+    "question": "deny",
+    "doom_loop": "deny",
+
+    "bash": {
+      "*": "allow",
+
+      "sudo *": "deny",
+      "su *": "deny",
+
+      "systemctl *": "deny",
+      "service *": "deny",
+      "journalctl *": "deny",
+      "loginctl *": "deny",
+
+      "ufw *": "deny",
+      "iptables *": "deny",
+      "nft *": "deny",
+
+      "reboot*": "deny",
+      "shutdown*": "deny",
+      "poweroff*": "deny",
+
+      "mount *": "deny",
+      "umount *": "deny",
+      "chown *": "deny",
+      "chmod -R *": "deny",
+
+      "apt *": "deny",
+      "apt-get *": "deny",
+      "snap *": "deny",
+
+      "docker *": "deny",
+      "podman *": "deny",
+
+      "rm -rf *": "deny",
+      "rm -fr *": "deny",
+
+      "git reset --hard*": "deny",
+      "git clean *": "deny",
+      "git push --force*": "deny",
+      "git push -f *": "deny",
+
+      "cc-connect daemon *": "deny",
+      "cc-connect weixin *": "deny",
+      "cc-connect feishu *": "deny"
+    }
   }
 }
 ```
 
+几个取舍：
 
-> 微信和飞书不是权限审批终端，而是任务入口。  
-> **权限应该预先设计好，不应该在每次工具调用时临时询问**。
+1. IM 场景里尽量少用 `ask`，否则工具调用容易中止。
+2. `question` 设置为 `deny`。需要用户判断时，让 Agent 直接回复问题，然后停止。
+3. `external_directory` 设置为 `deny`，但它只是 OpenCode 层权限，不是 Linux 系统级隔离。
 
-当 Agent 需要用户决策时，应该普通回复并停止, 而不是事件回调：
+保存后测试：
 
-```text
-这里需要你选择 A 或 B。我暂时不继续修改。
+```bash
+cd /srv/personal-agent/projects/sandbox
+
+opencode run --format json \
+  "Do not use tools. Reply exactly: CONFIG_OK"
 ```
 
-等用户下一条消息确认后再继续。
+## 7. cc-connect 配置：config.toml
 
----
-
-## 9. 文件上传：附件应复制到 inbox，而不是依赖临时路径
-
-微信和飞书都支持上传附件，但通过 cc-connect 进入 OpenCode 时，附件路径往往是临时的。
-
-更合理的规则是：
+本文统一使用固定配置路径：
 
 ```text
-用户上传附件
-  ↓
-cc-connect 临时接收
-  ↓
-Agent 在本次任务中读取
-  ↓
-如需长期使用，复制到 workspace/inbox/
+/srv/personal-agent/cc-connect/config.toml
 ```
 
-建议在 `AGENTS.md` 中增加：
+创建：
+
+```bash
+nano /srv/personal-agent/cc-connect/config.toml
+```
+
+最小结构：
+
+```toml
+language = "zh"
+
+[log]
+level = "info"
+
+[[projects]]
+name = "personal-sandbox"
+admin_from = "你的微信ID,你的飞书ID"
+
+[projects.agent]
+type = "opencode"
+
+[projects.agent.options]
+work_dir = "/srv/personal-agent/projects/sandbox"
+mode = "default"
+```
+
+这里不写 model。
+
+我踩过一个坑：cc-connect 配置里写了：
+
+```toml
+model = "opencode/deepseek-v4-flash-free"
+```
+
+结果是：
+
+```text
+直接运行 OpenCode：正常
+通过微信触发 cc-connect：失败
+```
+
+原因是 cc-connect 传入的 model 覆盖了 project 的 `opencode.jsonc`。修复原则：
+
+> cc-connect 不写 model。
+> 模型由 OpenCode project 自己管理。
+
+## 8. allow_from 和 admin_from
+
+这两个字段最容易混淆：
+
+```text
+allow_from
+  谁的普通消息可以触发 Agent
+
+admin_from
+  谁可以使用 cc-connect 管理命令
+```
+
+管理命令包括：
+
+```text
+/dir
+/shell
+/restart
+```
+
+只写 `admin_from` 不够。平台层没有 `allow_from` 时，其他人可能仍然能触发普通 Agent 任务。
+
+可以这样理解：
+
+```text
+project 层：
+  admin_from 控制管理员
+
+platform 层：
+  allow_from 控制谁能触发这个平台入口
+  allow_chat 控制哪些飞书群 / 聊天可以触发
+```
+
+## 9. 微信接入
+
+先在 `config.toml` 里保留 project 基础配置，然后执行：
+
+```bash
+cc-connect weixin setup \
+  --config /srv/personal-agent/cc-connect/config.toml \
+  --project personal-sandbox
+```
+
+这个命令会在终端打印二维码或 URL。手机微信确认后，它会把微信平台配置写回 `config.toml`。
+
+生成后检查：
+
+```bash
+grep -nA30 'name = "personal-sandbox"' /srv/personal-agent/cc-connect/config.toml
+```
+
+微信平台块应该类似：
+
+```toml
+[[projects.platforms]]
+type = "weixin"
+
+[projects.platforms.options]
+token = "ilink_bot_bearer_token"
+base_url = "https://ilinkai.weixin.qq.com"
+account_id = "personal-weixin"
+allow_from = "你的微信用户ID"
+```
+
+如果 `allow_from` 为空，或者是 `"*"`，上线前要手动收紧。
+
+首次使用时，还需要从微信端先发一条消息，让 cc-connect 缓存上下文：
+
+```text
+你好
+```
+
+然后测试：
+
+```text
+/new
+```
+
+再发送：
+
+```text
+不要调用工具，只回复：WEIXIN_OK
+```
+
+接入新的微信用户时，通常不需要重新 setup 整个服务：
+
+```text
+1. 让新用户能找到这个微信 Bot
+2. 临时放开 allow_from 或让他发送 /whoami
+3. 拿到 xxx@im.wechat
+4. 把该 ID 加进对应 project 的 allow_from
+5. 重启 cc-connect
+```
+
+只有 token 失效、Bot 身份变化、配置丢失时，才需要重新 setup。
+
+## 10. 飞书接入
+
+飞书走 WebSocket 长连接，不需要公网 IP、域名或反向代理。
+
+执行：
+
+```bash
+cc-connect feishu setup \
+  --config /srv/personal-agent/cc-connect/config.toml \
+  --project personal-sandbox
+```
+
+如果已经有飞书应用凭证，可以传入：
+
+```bash
+cc-connect feishu setup \
+  --config /srv/personal-agent/cc-connect/config.toml \
+  --project personal-sandbox \
+  --app cli_xxx:sec_xxx
+```
+
+生成后，飞书平台块类似：
+
+```toml
+[[projects.platforms]]
+type = "feishu"
+
+[projects.platforms.options]
+app_id = "cli_xxxxxxxxxxxxxx"
+app_secret = "xxxxxxxxxxxxxxxx"
+
+allow_from = "你的飞书 open_id"
+allow_chat = "*"
+
+group_only = false
+group_reply_all = false
+thread_isolation = true
+
+enable_feishu_card = true
+progress_style = "compact"
+done_emoji = "Done"
+```
+
+我会这样设：
+
+```toml
+group_reply_all = false
+```
+
+表示群聊里只有 @机器人 才触发，避免监听所有群消息。
+
+```toml
+thread_isolation = true
+```
+
+表示飞书话题线程尽量隔离成不同会话。
+
+```toml
+allow_chat = "*"
+```
+
+表示允许任意聊天位置，但仍然要满足 `allow_from`。
+
+如果暂时不用卡片，可以关掉：
+
+```toml
+enable_feishu_card = false
+progress_style = "legacy"
+```
+
+飞书开放平台侧检查：
+
+```text
+1. 机器人能力是否启用
+2. 应用是否发布
+3. 可见范围是否包含目标用户
+4. 消息事件是否订阅
+5. 是否使用长连接接收事件
+```
+
+最小消息事件：
+
+```text
+im.message.receive_v1
+```
+
+如果使用交互卡片，还需要：
+
+```text
+card.action.trigger
+```
+
+## 11. 前台验证
+
+先前台启动：
+
+```bash
+cc-connect -config /srv/personal-agent/cc-connect/config.toml
+```
+
+看到类似日志即可：
+
+```text
+level=INFO msg="platform ready" project=personal-sandbox platform=weixin
+level=INFO msg="platform ready" project=personal-sandbox platform=feishu
+level=INFO msg="engine started" project=personal-sandbox agent=opencode platforms=2
+level=INFO msg="cc-connect is running" projects=1
+```
+
+按这个顺序验收：
+
+```text
+[ ] 直接在 work_dir 运行 OpenCode 正常
+[ ] OpenCode 能读取 AGENTS.md
+[ ] opencode.jsonc 中的模型可用
+[ ] cc-connect 能启动并加载 project
+[ ] 微信私聊能触发 personal-sandbox
+[ ] 飞书私聊能触发 personal-sandbox
+[ ] 飞书群聊只有 @bot 才触发
+[ ] allow_from 之外的用户不能触发
+[ ] cc-connect 配置中没有重复 model
+[ ] Agent 能把附件复制到 inbox/YYYY-MM-DD/
+[ ] Agent 能把结果写入 deliverables/<task-name>/
+[ ] 高风险命令被 permission 拦住
+```
+
+第一个测试 prompt：
+
+```text
+请读取 AGENTS.md，总结这个 workspace 的用途和禁止事项。
+不要修改文件。
+```
+
+第二个测试 prompt：
+
+```text
+请在 deliverables/cc-connect-smoke-test/ 下创建一个 README.md，
+记录当前测试来自微信还是飞书。
+不要读取 workspace 外部目录。
+```
+
+这两步跑通后，再交给 systemd。
+
+## 12. systemd 后台运行
+
+先确认 cc-connect 路径：
+
+```bash
+command -v cc-connect
+```
+
+假设输出是：
+
+```text
+/usr/local/bin/cc-connect
+```
+
+创建服务：
+
+```bash
+sudo tee /etc/systemd/system/cc-connect-agent.service > /dev/null <<'EOF'
+[Unit]
+Description=cc-connect agent bridge
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=agent
+Group=agent
+WorkingDirectory=/srv/personal-agent
+ExecStart=/usr/local/bin/cc-connect -config /srv/personal-agent/cc-connect/config.toml
+Restart=always
+RestartSec=5
+
+Environment=HOME=/home/agent
+
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+如果 `command -v cc-connect` 不是 `/usr/local/bin/cc-connect`，要修改 `ExecStart`。
+
+启动：
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now cc-connect-agent
+sudo systemctl status cc-connect-agent
+```
+
+看日志：
+
+```bash
+journalctl -u cc-connect-agent -f
+```
+
+更新配置后重启：
+
+```bash
+sudo systemctl restart cc-connect-agent
+```
+
+cc-connect 也有自带 daemon。我这里选择 systemd，用固定运行用户、固定 config 路径，和服务器服务管理方式保持一致。
+
+## 13. 多项目 / 多用户
+
+cc-connect 可以一个进程管理多个 project。
+
+推荐原则：
+
+```text
+一个用户 / 一个用途 = 一个 project = 一个 work_dir
+```
+
+例如给一个量化朋友开独立工作区：
+
+```toml
+[[projects]]
+name = "quant-friend"
+admin_from = "owner_feishu_open_id"
+
+[projects.agent]
+type = "opencode"
+
+[projects.agent.options]
+work_dir = "/srv/personal-agent/projects/quant-friend"
+mode = "default"
+
+[[projects.platforms]]
+type = "feishu"
+
+[projects.platforms.options]
+app_id = "cli_xxx"
+app_secret = "xxx"
+
+allow_from = "friend_feishu_open_id"
+allow_chat = "*"
+
+group_only = false
+group_reply_all = false
+thread_isolation = true
+
+enable_feishu_card = true
+progress_style = "compact"
+done_emoji = "Done"
+```
+
+这样可以做到：
+
+```text
+你发消息
+  → personal-sandbox
+  → /srv/personal-agent/projects/sandbox
+
+朋友发消息
+  → quant-friend
+  → /srv/personal-agent/projects/quant-friend
+```
+
+这里仍然只是逻辑隔离。多个 project 如果都由同一个 Linux 用户 `agent` 运行，本质上共享该用户的系统权限。
+
+更强隔离需要继续升级：
+
+```text
+不同 Linux 用户
+不同 cc-connect 实例
+systemd user service
+Docker / Podman
+独立 volume
+网络限制
+```
+
+## 14. 同一个飞书应用复用多个 project
+
+飞书可以复用同一个 `app_id / app_secret` 给多个 project。
+
+注意：
+
+> 多个 project 复用同一个飞书应用时，allow_from / allow_chat 要尽量互斥。
+
+错误例子：
+
+```toml
+[[projects]]
+name = "personal-sandbox"
+
+[projects.platforms.options]
+allow_chat = "*"
+# allow_from 没写
+```
+
+然后又配置：
+
+```toml
+[[projects]]
+name = "quant-friend"
+
+[projects.platforms.options]
+allow_from = "friend_open_id"
+allow_chat = "*"
+```
+
+这种情况下，朋友的消息可能先被 `personal-sandbox` 匹配，导致路由错乱。
+
+正确方式：
+
+```toml
+[[projects]]
+name = "personal-sandbox"
+
+[projects.platforms.options]
+allow_from = "your_open_id"
+allow_chat = "*"
+```
+
+```toml
+[[projects]]
+name = "quant-friend"
+
+[projects.platforms.options]
+allow_from = "friend_open_id"
+allow_chat = "*"
+```
+
+也就是：
+
+```text
+personal-sandbox 只允许你
+quant-friend 只允许朋友
+```
+
+## 15. 附件处理规则
+
+微信和飞书都能传附件，但 cc-connect 交给 OpenCode 的附件路径可能是临时路径。
+
+规则：后续还会使用的文件，复制到 workspace/inbox/。
+
+写进 `AGENTS.md`：
 
 ```markdown
 ## Incoming Attachments
@@ -628,7 +876,7 @@ When an attachment will be needed beyond the current request:
 6. Treat the saved copy as the stable input for subsequent work.
 ```
 
-实际使用时可以这样对 Agent 说：
+实际对 Agent 下任务时，可以这样说：
 
 ```text
 请把我刚上传的附件复制到 inbox/2026-06-11/，
@@ -637,242 +885,111 @@ When an attachment will be needed beyond the current request:
 然后再开始分析。
 ```
 
-这条规则可能对公司知识库更重要。
+公司知识库里的附件通常是原始输入材料，必须进入稳定目录。不要依赖平台临时缓存。
 
-公司场景中，上传文件往往不是一次性聊天材料，而是知识库的原始输入。它们应该进入稳定目录，而不是散落在平台临时缓存里。
+## 16. 微信和飞书的定位
 
----
+微信适合远程派任务、快速问答、上传小文件和看最终结果。飞书更适合公司入口，群聊 @bot、线程讨论、团队协作、文件沉淀和消息审计都更自然。
 
-## 10. 微信与飞书的体验差异
+复杂任务仍然回到 OpenCode TUI、OpenCode Web UI、IDE 或 SSH。IM 入口只承担派发任务和接收结果。
 
-### 10.1 微信
+## 17. 常见坑
 
-微信适合：
+### 17.1 cc-connect 里重复写 model
 
-```text
-远程派任务
-快速问答
-上传小文件
-看最终结果
-让 Agent 做简单整理
-```
-
-但微信不是很适合：
+现象：
 
 ```text
-长时间流式输出
-复杂权限确认
-大量 diff 阅读
-频繁选择分支
-复杂调试 steering
+直接 opencode run 正常
+微信 / 飞书触发失败
 ```
 
-
-### 10.2 飞书
-
-飞书更适合公司内部 Agent：
-
-```text
-群聊 @bot
-线程隔离
-卡片进度
-团队协作
-文件收发
-消息沉淀
-```
-
-飞书 Bot 可以加入群聊，但建议保持：
+原因：
 
 ```toml
-group_reply_all = false
+model = "xxx"
 ```
 
-也就是只响应 `@机器人` 的消息，而不是监听群内所有聊天。
+写在了 `[projects.agent.options]` 下，覆盖了 project 的 `opencode.jsonc`。
 
-否则会出现：
-
-- 误触发；
-- 成本不可控；
-- 隐私边界模糊；
-- 群聊噪音变大。
-
-更合理的群聊使用方式是：
+修复：
 
 ```text
-群里讨论
-  ↓
-@Agent 分配明确任务
-  ↓
-Agent 输出结果或文件
-  ↓
-复杂修改转入私聊或 OpenCode TUI
+cc-connect 不写 model
+OpenCode project 的 opencode.jsonc 负责 model
 ```
 
----
+### 17.2 只写 admin_from，没有写 allow_from
 
-## 11. 多用户与多项目
+`admin_from` 只控制管理命令。
 
-cc-connect 支持一个进程管理多个项目：
+真正控制谁能触发 Agent 的是平台层：
 
 ```toml
-[[projects]]
-name = "user-a"
-
-[[projects]]
-name = "user-b"
-
-[[projects]]
-name = "company-kb"
+allow_from = "user_id"
 ```
 
-每个项目可以有：
+### 17.3 多 project 复用同一个飞书 app_id，allow_from 太宽
 
-- 独立 agent；
-- 独立工作目录；
-- 独立平台；
-- 独立用户权限。
+如果一个 project 的飞书平台没有 `allow_from`，它可能抢走其他 project 的消息。
 
-这让轻量多用户成为可能。
-
-例如：
+修复：
 
 ```text
-/srv/personal-agent/projects/
-├── john/
-├── friend-a/
-├── friend-b/
-└── shared/
+每个 project 的 allow_from / allow_chat 尽量互斥
 ```
 
-或者公司场景：
+### 17.4 微信 setup 后没有发第一条消息
+
+微信接入后，需要用户先给 Bot 发一条消息，完成 context_token 缓存。
+
+### 17.5 IM 场景大量使用 ask
+
+`ask` 在 TUI 里很自然，但在微信 / 飞书里容易导致工具调用中止。
+
+修复：
 
 ```text
-/srv/company-agents/
-├── kb-docs/
-├── sales-copilot/
-├── support-faq/
-└── demo-workspace/
+常用安全操作 allow
+危险操作 deny
+尽量少用 ask
 ```
 
-但要注意：
+### 17.6 附件没有复制到 inbox
 
-> 多项目不等于强隔离。
+平台附件路径可能是临时路径。
 
-如果多个项目仍以同一个 Linux 用户运行，那么它们本质上共享该用户的系统权限。  
-`work_dir` 是逻辑隔离，不是内核级隔离。
-
-因此这套模式适合：
+修复：
 
 ```text
-可信用户
-内部团队
-低风险任务
-有 Git 恢复
-有权限 deny
-有日志审计
+需要长期使用的附件进入 inbox/YYYY-MM-DD/
 ```
 
-不适合：
+### 17.7 systemd ExecStart 路径错误
+
+npm / release binary / Homebrew 的安装路径可能不同。
+
+启动 systemd 前先确认：
+
+```bash
+command -v cc-connect
+```
+
+### 17.8 误以为 work_dir 是强隔离
+
+`work_dir` 是 project 级逻辑隔离，不是系统级隔离。
+
+强隔离要靠：
 
 ```text
-陌生用户
-外部公开服务
-强安全隔离要求
-高风险生产操作
+Linux user
+container
+VM
 ```
 
-真正不可信用户场景，仍然应该考虑：
+## 18. 公司知识库版本
 
-- 不同 Linux 用户；
-- 不同 cc-connect 实例；
-- systemd 用户服务；
-- Docker / Podman；
-- 容器资源限制；
-- 独立卷；
-- 只读根文件系统；
-- 网络限制。
-
----
-
-## 12. allow_from 与 admin_from：谁能触发，谁能管理
-
-在 cc-connect 中，要区分两个概念：
-
-```text
-allow_from
-= 谁的消息可以触发 Agent
-
-admin_from
-= 谁可以使用管理命令
-```
-
-例如：
-
-```toml
-[[projects]]
-name = "personal-sandbox"
-admin_from = "你的微信ID,你的飞书ID"
-```
-
-这只代表这些用户是管理员。
-
-平台层还需要：
-
-```toml
-[[projects.platforms]]
-type = "weixin"
-
-[projects.platforms.options]
-allow_from = "你的微信ID"
-```
-
-以及：
-
-```toml
-[[projects.platforms]]
-type = "feishu"
-
-[projects.platforms.options]
-allow_from = "你的飞书ID"
-allow_chat = "*"
-group_reply_all = false
-```
-
-这样才能保证：
-
-```text
-只有 allow_from 中的用户能触发 Agent
-只有 admin_from 中的用户能使用管理命令
-群聊中只有 @bot 才响应
-```
-
-最容易犯的错误是：
-
-```toml
-admin_from = "你的ID"
-```
-
-但平台层没有配置 `allow_from`。
-
-这种情况下，其他人虽然不是管理员，但仍可能触发普通 Agent 任务。
-
-所以对公司 Agent 来说，至少要有两层控制：
-
-```text
-平台 allow_from / allow_chat
-  ↓
-项目 admin_from
-  ↓
-OpenCode permission
-  ↓
-AGENTS.md / Skills
-```
-
----
-
-## 13. 适合公司的接入模式
-
-把这次个人部署抽象出来，公司内部 Agent 可以采用类似模式：
+迁移到公司知识库时，链路不变：
 
 ```text
 Feishu Group / Private Chat
@@ -881,149 +998,88 @@ cc-connect
   ↓
 OpenCode Project
   ↓
-Company KnowledgeBase Workspace
+/srv/company-kb
   ↓
-AGENTS.md + Skills + Permissions
+AGENTS.md + Skills + opencode.jsonc
 ```
 
-但公司版本应进一步加强：
+公司版本要补约束。
 
-### 13.1 项目隔离
+### 项目隔离
 
-不同用途拆成不同项目：
+不同用途拆成不同 project：
 
 ```text
 company-kb
-sales-demo
 support-faq
+sales-demo
 data-analysis
-admin-sandbox
 ```
 
-不要把所有任务塞进一个 workspace。
+### 用户权限
 
-### 13.2 用户权限
-
-不同项目限制不同用户：
+通过：
 
 ```text
-知识库维护人员
-  可以编辑 docs/
-
-普通业务用户
-  只能提问和生成草稿
-
-管理员
-  可以执行维护命令
+allow_from
+allow_chat
+admin_from
 ```
 
-### 13.3 审计
+限制谁能触发、谁能管理、哪个群能用。
 
-至少记录：
+### 数据边界
 
-- 谁触发；
-- 何时触发；
-- 来自哪个平台；
-- 哪个 project；
-- 修改了哪些文件；
-- 是否生成 deliverable；
-- 是否运行测试或校验。
+明确：
 
-### 13.4 数据边界
+```text
+哪些文件能读
+哪些文件能改
+哪些内容不能发给外部模型
+哪些输出必须人工 review
+```
 
-公司知识库常涉及客户文档、业务数据和内部流程，因此要明确：
+### 交付目录
 
-- 哪些文件可读；
-- 哪些文件可改；
-- 哪些内容不能发送给外部模型；
-- 哪些输出必须人工审核；
-- 原始文件如何归档；
-- 生成文件如何交付。
-
-### 13.5 交付目录
-
-建议所有最终文件都进入：
+最终结果进入：
 
 ```text
 deliverables/<task-name>/
 ```
 
-并包含：
+重要输出不要散落在聊天记录里。
+
+### 审计
+
+记录：
 
 ```text
-README.md
-source/
-output/
-validation-notes.md
+谁触发
+哪个平台
+哪个 project
+改了哪些文件
+生成了哪些交付物
+是否经过验证
 ```
 
-这比让 Agent 在聊天里吐一大段内容更可控。
+对公司知识库来说，cc-connect 的价值是把团队协作平台里的明确任务送进一个受约束的 OpenCode workspace。
 
----
+## 19. 小结
 
-## 14. 这套方式的边界
+这次实践后的结论：
 
-这套架构很好用，但不能神化。
+1. cc-connect 做消息入口和 project 路由。
+2. OpenCode 执行任务，模型和权限放在 project 的 `opencode.jsonc`。
+3. `work_dir`、`allow_from`、`admin_from` 是配置重点。
+4. 飞书群聊建议 `group_reply_all = false`。
+5. IM 场景减少 `ask`，权限提前设计成 allow / deny。
+6. 附件进 `inbox/`，输出进 `deliverables/`。
+7. 多项目是逻辑隔离，强隔离要靠系统层设计。
 
-它适合：
+核心方案：
 
-```text
-远程派活
-知识库维护
-文档整理
-内部问答
-小型代码修改
-批量格式处理
-轻量数据分析
-生成报告
-```
+> 用 cc-connect 做微信 / 飞书到 OpenCode project 的路由层；
+> 用 OpenCode project 自己的 AGENTS.md、Skills、opencode.jsonc 管住执行边界；
+> 用 workspace 目录结构沉淀输入、过程和交付物。
 
-不适合直接承担：
-
-```text
-生产系统运维
-高风险服务器操作
-不可信用户沙箱
-强权限审批流程
-复杂长时间 debug
-大量人工 steering
-```
-
-微信和飞书是优秀的入口，但不是完整终端。  
-复杂任务仍然应该回到：
-
-```text
-SSH + OpenCode TUI
-```
-
-或者：
-
-```text
-Web UI / IDE / 专门的 Agent 控制台
-```
-
-更准确的定位是：
-
-> IM 平台负责派发任务和接收结果；  
-> OpenCode 负责执行；  
-> workspace 负责沉淀；  
-> AGENTS.md、Skills 和 permission 负责约束；  
-> Git 和日志负责恢复与审计。
-
----
-
-## 15. 小结
-
-这次个人部署给我的核心结论：
-
-1. **cc-connect 可以把 OpenCode 从终端扩展到微信、飞书等协作平台。**
-2. **模型配置应该放在 OpenCode 项目里，不要在 cc-connect 里重复指定。**
-3. **IM 场景不适合大量使用 `ask` 权限；应该采用 allow / deny 的确定性策略。**
-4. **附件要复制到 workspace 的 `inbox/`，不要依赖平台临时路径。**
-5. **微信更像远程遥控器，飞书更适合公司协作入口。**
-6. **多项目可以支持轻量多用户，但不是强安全隔离。**
-7. **公司内部 Agent 可以复用这套架构，但必须加强权限、审计和数据边界。**
-
-所以，这篇虽然来自个人服务器部署，但它也讨论的是一个更通用的问题：
-
-> 如何把 OpenCode 从“开发者本地工具”变成“团队协作平台里的 Agent Runtime”。
+这是公司 KnowledgeBase Agent 继续往前走时需要的一层：让 Agent 进入团队真实使用的协作入口。
