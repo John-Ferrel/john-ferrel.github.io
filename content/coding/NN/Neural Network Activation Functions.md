@@ -5,7 +5,7 @@ tags:
   - nn
   - ai
 created: 2026-03-11 19:56
-modified: 2026-03-11 19:56
+modified: 2026-07-12 00:00
 ---
 
 ## 1. Neuron Structure
@@ -53,11 +53,9 @@ So neural networks need activation functions to introduce **non-linearity**.
 
 ## 3. Core Roles of Activation Functions
 
-Activation functions serve several purposes.
+Activation functions affect what a network can represent, how it trains, and how an output is interpreted.
 
 ### 3.1 Introduce Non-Linearity
-
-This is the **most important role**.
 
 With activation functions:
 
@@ -163,40 +161,7 @@ Different tasks use different outputs:
 
 ---
 
-## 4. Hidden Layer vs Output Layer
-
-Activation functions have different roles depending on the layer.
-
-### Hidden Layer
-
-Main goals:
-
-- introduce non-linearity
-- improve optimization
-- create sparse representations
-
-Common choices:
-
-- ReLU
-- GELU
-- Leaky ReLU
-- Swish
-
----
-
-### Output Layer
-
-Chosen based on the **task type**.
-
-| Task | Activation |
-|----|----|
-|binary classification | sigmoid |
-|multi-class classification | softmax |
-|regression | identity |
-
----
-
-## 5. Modern Perspective
+## 4. Modern Perspective
 
 A neural network can be viewed as:
 
@@ -214,7 +179,7 @@ This explains why deep networks with simple activations can still approximate co
 
 ---
 
-## 6. Why Transformers / LLMs Use Simple Activations
+## 5. Why Transformers / LLMs Use Simple Activations
 
 Modern large models usually use:
 
@@ -223,7 +188,7 @@ Modern large models usually use:
 
 Reasons:
 
-### 6.1 Deep Networks Create Complexity
+### 5.1 Deep Networks Create Complexity
 
 Even simple activation functions can produce complex functions when stacked across many layers.
 
@@ -231,7 +196,7 @@ Depth dramatically increases expressive power.
 
 ---
 
-### 6.2 Piecewise Linear Geometry
+### 5.2 Piecewise Linear Geometry
 
 ReLU networks approximate functions using many **linear regions**.
 
@@ -239,7 +204,7 @@ Deep networks increase the number of these regions exponentially.
 
 ---
 
-### 6.3 Optimization Stability
+### 5.3 Optimization Stability
 
 ReLU/GELU provide better training dynamics:
 
@@ -249,36 +214,6 @@ ReLU/GELU provide better training dynamics:
 
 ---
 
-## 7. Practical Guidelines
+## 6. Practical Defaults
 
-### Hidden Layers
-
-Recommended defaults:
-
-- ReLU (classic)
-- GELU (Transformer / LLM)
-
----
-
-### Output Layers
-
-Choose based on task:
-
-| Task | Activation |
-|----|----|
-|binary classification | sigmoid |
-|multi-class classification | softmax |
-|regression | identity |
-
----
-
-## 8. Key Takeaways
-
-Activation functions are essential because they:
-
-1. introduce **non-linearity**
-2. enable **gradient-based learning**
-3. create **sparse representations**
-4. shape **output distributions**
-
-Even simple activations like **ReLU/GELU** are sufficient for extremely powerful models when combined with **depth and high-dimensional representations**.
+For hidden layers, ReLU is the classic default and GELU is common in Transformers / LLMs. For the output layer, choose an activation from the task: sigmoid for binary classification, softmax for multi-class classification, and identity for regression.

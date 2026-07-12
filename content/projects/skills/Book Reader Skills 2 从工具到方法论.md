@@ -9,7 +9,7 @@ tags:
   - architecture
 draft: false
 created: 2026-07-01 00:58
-modified: 2026-07-01 02:14
+modified: 2026-07-12 00:00
 ---
 
 > Book Reader Skills 系列第 2 篇。上一篇[[Book Reader Skills 1 读书不是总结]] 讲了问题定义：读书不是总结。这一篇讲架构：当目标变成知识索引和反庸俗，skills 应该怎么拆。
@@ -162,7 +162,7 @@ book-intake -> book-reconstruct
 
 如果是技术书、小说、论文集、修订版书籍，则再选择对应 lens。
 
-也就是说，它起到调度层的作用。
+它就是调度层。
 
 
 ---
@@ -358,9 +358,9 @@ scripts/     低判断工具
 
 ---
 
-## fallback 也要分层
+## 不确定性也要分层处理
 
-v2 还有一个重要原则：
+v2 将两类不确定性分开处理：
 
 ```text
 Code fallback handles extraction uncertainty.

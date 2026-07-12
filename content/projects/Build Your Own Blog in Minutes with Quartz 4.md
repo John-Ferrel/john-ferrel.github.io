@@ -39,7 +39,6 @@ npm --version
 ## 2. Set Up Quartz
 
 Choose a directory where you want to create your blog,  and right-click and select "Open in Terminal" or "Open PowerShell here".
-Then,
 ```bash
 git clone https://github.com/jackyzha0/quartz.git
 cd quartz

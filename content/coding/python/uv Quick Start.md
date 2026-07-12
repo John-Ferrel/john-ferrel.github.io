@@ -5,18 +5,16 @@ tags:
   - uv
   - python
 created: 2026-03-15 21:01
-modified: 2026-03-15 21:01
+modified: 2026-07-12 00:00
 ---
-uv 是一个用 **Rust 编写的 Python 包管理器和环境管理工具**, 速度比 pip 快很多, 并且可以替代：
+uv 是一个用 **Rust 编写的 Python 包管理和环境管理工具**，可覆盖：
 
 - pip
 - pip-tools
 - virtualenv
 - pyenv（部分功能）
 
-一句话总结：
-
-> uv = pip + venv + python installer（超级快版本）
+可以把它理解为：`pip + venv + Python installer`。
 
 ---
 
@@ -269,4 +267,3 @@ VSCode 插件：
 - Pylance
 
 ---
-

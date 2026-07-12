@@ -5,7 +5,7 @@ tags:
   - llm
   - server
 created: 2026-04-14 21:52
-modified: 2026-04-14 21:52
+modified: 2026-07-12 00:00
 ---
 
 **环境:Ubuntu 24.04 + WireGuard + Docker + SillyTavern**
@@ -386,7 +386,7 @@ SillyTavern 官方文档确认 multi-user 可让不同用户拥有各自设置�
 http://10.xx.xx.1:8000
 ```
 
-不是公网 IP, 不是公网端口. 
+使用 VPN 内网地址，不是公网 IP 或端口。
 
 首次登录后:
 
@@ -405,7 +405,7 @@ http://10.xx.xx.1:8000
 3. 填写 base URL 和 API key
 4. 测试连接
 
-如果后续把某个 OpenAI-compatible 网关部署在宿主机本机, 而 SillyTavern 跑在 Docker 里, Docker 场景下访问宿主机本地服务应用 `host.docker.internal`, 而不是 `127.0.0.1`. 
+如果 OpenAI-compatible 网关部署在宿主机，而 SillyTavern 跑在 Docker 里，容器应通过 `host.docker.internal` 访问宿主机服务。
 
 ---
 
@@ -560,9 +560,8 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o 
 - `gpg:no valid OpenPGP data found.`
 - 后面 `apt update` 又报 `NO_PUBKEY 7EA0A9C3F273FCD8`
 
-也就是说:
-Docker 的 GPG key **根本没下载成功**, 所以 `/etc/apt/keyrings/docker.gpg` 是坏的或空的.   
-后面虽然把 Docker 源写进去了, 但系统没有对应公钥, 所以仓库签名校验失败. 
+Docker 的 GPG key **没有下载成功**，`/etc/apt/keyrings/docker.gpg` 因此为空或无效。
+Docker 源虽然已写入，但系统缺少对应公钥，仓库签名校验会失败。
 
 **修复**
 

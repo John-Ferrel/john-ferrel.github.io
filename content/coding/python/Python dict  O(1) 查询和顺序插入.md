@@ -4,12 +4,12 @@ tags:
   - python
 draft: false
 created: 2026-05-13 19:45
-modified: 2026-05-13 19:46
+modified: 2026-07-12 00:00
 ---
 从 Python 3.6 开始，`dict` 在 CPython 实现中开始保持插入顺序。  
 从 Python 3.7 开始，`dict` 保持插入顺序正式成为 Python 语言规范。
 
-也就是说：
+插入顺序如下：
 
 ```python
 d = {}
@@ -35,7 +35,7 @@ print(d)
 # {10: 'x', 3: 'y', 7: 'z'}
 ```
 
-它不会自动变成：
+它不会按 key 排序：
 
 ```python
 {3: 'y', 7: 'z', 10: 'x'}
@@ -170,16 +170,14 @@ hash(key) -> indices table -> entries array -> value
 
 ## 4. 这是用双倍空间换时间吗？
 
-不完全是。
-
-更准确地说，它确实维护了两类结构：
+它维护两类结构：
 
 ```text
 1. indices table
 2. entries array
 ```
 
-但这不是保存了两份完整数据。
+这不是保存了两份完整数据。
 
 真正的 key、value、hash 存在 `entries array` 里。  
 `indices table` 只保存一个较小的整数索引，用来告诉 Python：
@@ -217,9 +215,7 @@ Python dict 主要使用：
 开放寻址 open addressing + 扰动探测 probing
 ```
 
-它不是链表法。
-
-也就是说，不是这样：
+它采用开放寻址，不用链表。哈希槽不会链成下面这样：
 
 ```text
 slot 3: ("a", 1) -> ("b", 2) -> ("c", 3)
@@ -372,7 +368,7 @@ d[key] 删除：平均 O(1)
 遍历 dict：O(n)，且按插入顺序
 ```
 
-但需要注意：
+注意：
 
 ```text
 dict 的有序 = 插入顺序
