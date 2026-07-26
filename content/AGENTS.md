@@ -3,7 +3,7 @@ title: AGENTS
 draft: true
 tags:
 created: 2026-06-29 00:00
-modified: 2026-06-28 23:59
+modified: 2026-07-26 18:48
 ---
 # AGENTS.md
 
@@ -54,6 +54,10 @@ modified: YYYY-MM-DD HH:mm
 - Do not invent project facts, personal experience, metrics, results, or conclusions.
 - Do not rename, move, delete, or reorganize files unless explicitly asked.
 - Do not modify code blocks, commands, config snippets, or identifiers during prose polishing unless requested.
+
+## Writing Style
+
+- 禁止使用公式化的 AI 表达，包括先否定后肯定的“不是……而是……”及类似句式。直接陈述结论、证据和影响，减少套话对语料风格的干扰。
 
 ## Reporting
 
