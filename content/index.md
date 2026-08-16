@@ -5,7 +5,8 @@ tags:
 created: 2025-12-11 22:12
 modified: 2026-06-28 23:50
 ---
-# John Ferrel
+>**O God, I could be bounded in a nutshell, and count myself a king of infinite space, were it not that I have bad dreams.**
+>— William Shakespeare, _Hamlet_, Act 2, Scene 2
 
 I write about practical AI engineering, knowledge workflows, forecasting, and Python tooling.
 
