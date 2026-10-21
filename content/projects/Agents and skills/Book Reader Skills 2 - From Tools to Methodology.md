@@ -1,5 +1,5 @@
 ---
-title: Book Reader Skills 2 从工具到方法论
+title: "Book Reader Skills 2 - From Tools to Methodology"
 tags:
   - agent
   - skills
@@ -9,24 +9,20 @@ tags:
   - architecture
 draft: false
 created: 2026-07-01 00:58
-modified: 2026-07-12 00:00
+modified: 2026-10-22 00:05
+aliases:
+  - "projects/Agents and skills/Book Reader Skills 2 从工具到方法论"
 ---
 
-> Book Reader Skills 系列第 2 篇。上一篇[[Book Reader Skills 1 读书不是总结]] 讲了问题定义：读书不是总结。这一篇讲架构：当目标变成知识索引和反庸俗，skills 应该怎么拆。
+[[Book Reader Skills 1 - Reading Beyond Summaries]] 将阅读目标定义为知识索引和反庸俗。围绕这两个目标，`book-reader` 需要重新划分阅读、证据整理和审查的职责。
 
-第一版 `book-reader` 很像一个工具。
-
-它做的事情大概是：
+第一版主要处理文本提取和笔记生成：
 
 ```text
 提取文本 -> 切章节 -> 生成笔记 -> 校验结果
 ```
 
-这条路一开始很自然。因为“让 agent 读书”听起来就是一个流程问题：把书转成文本，再让 agent 逐章读。
-
-后来发现不行。
-
-流程跑完了，书也像是读完了，深度仍然不够。
+这套流程能完成文本处理和笔记生成，阅读深度仍然不足。
 
 ---
 

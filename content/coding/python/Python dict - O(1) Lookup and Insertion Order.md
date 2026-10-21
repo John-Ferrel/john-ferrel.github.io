@@ -1,10 +1,12 @@
 ---
-title: Python dict  O(1) 查询和顺序插入
+title: "Python dict - O(1) Lookup and Insertion Order"
 tags:
   - python
 draft: false
 created: 2026-05-13 19:45
-modified: 2026-07-12 00:00
+modified: 2026-10-22 00:02
+aliases:
+  - "coding/python/Python dict  O(1) 查询和顺序插入"
 ---
 从 Python 3.6 开始，`dict` 在 CPython 实现中开始保持插入顺序。  
 从 Python 3.7 开始，`dict` 保持插入顺序正式成为 Python 语言规范。

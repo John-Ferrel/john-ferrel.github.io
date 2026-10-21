@@ -1,5 +1,5 @@
 ---
-title: Freqtrade Weekend Lab：从规则策略到机器学习交易系统
+title: "Freqtrade Weekend Lab - From Rule-Based Strategies to Machine Learning Trading Systems"
 draft: false
 tags:
   - freqtrade
@@ -7,21 +7,12 @@ tags:
   - algorithmic-trading
   - machine-learning
 created: 2026-07-26 17:24
-modified: 2026-07-26 18:44
+modified: 2026-10-22 00:05
 ---
 
-本文记录一次基于 Freqtrade 的周末实验，重点是拆开交易系统中几个相互影响的环节，并观察它们如何共同影响结果。
+这次 Freqtrade 实验从规则策略扩展到机器学习策略，比较入场、退出、止损、持仓占用、费用和执行环境对结果的影响。
 
-先给结论：本次实验没有发现有效策略，但验证了入场、退出、止损、持仓占用、费用和执行环境之间的路径依赖。Freqtrade 降低了交易基础设施的实现成本，却没有降低研究者对数据、实验设计和风险边界的责任。
-
-全文按照以下顺序展开：框架抽象 → 实验设计 → 规则策略结果 → 回测与 Dry-run 验证 → 机器学习扩展。
-
-目标是理解以下问题：
-
-1. Freqtrade 如何表达和执行交易策略；
-2. 入场、退出、止损和持仓占用如何共同决定结果；
-3. 回测、Dry-run 和真实交易分别验证什么；
-4. 规则策略如何扩展到机器学习策略。
+实验没有发现有效策略。结果显示，这些环节之间存在路径依赖，回测与 Dry-run 的结果需要结合交易规则和执行假设解释。
 
 实验范围：
 

@@ -1,10 +1,12 @@
 ---
-title: 2025年度总结
+title: "2025 Year in Review"
 draft: false
 tags:
   - summary
 created: 2026-01-01 11:42
-modified: 2026-02-01 11:33
+modified: 2026-10-22 00:02
+aliases:
+  - "specials/2025年度总结"
 ---
 下面的流水账记完了, 终于知道可以写什么了.
 

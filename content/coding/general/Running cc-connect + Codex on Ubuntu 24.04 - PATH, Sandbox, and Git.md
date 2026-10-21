@@ -1,5 +1,5 @@
 ---
-title: "Ubuntu 24.04 上运行 cc-connect + Codex：PATH、Sandbox 与 Git"
+title: "Running cc-connect + Codex on Ubuntu 24.04 - PATH, Sandbox, and Git"
 tags:
   - cc-connect
   - codex
@@ -8,10 +8,12 @@ tags:
   - git
 draft: false
 created: 2026-08-30 00:00
-modified: 2026-10-08 23:23
+modified: 2026-10-22 00:02
+aliases:
+  - "coding/general/Ubuntu 24.04 上运行 cc-connect + Codex：PATH、Sandbox 与 Git"
 ---
 
-这篇整理 cc-connect + Codex 的分层排障步骤。同一次配置过程中的错误推断、实际日志与 Git 权限问题，记录在 [[CC-Connect + Codex - Error and Mistakes]]。
+这篇整理 cc-connect + Codex 的分层排障步骤。同一次配置过程中的错误推断、实际日志与 Git 权限问题，记录在 [[CC-Connect + Codex - Errors and Lessons]]。
 
 环境：
 
@@ -165,7 +167,7 @@ codex sandbox
 
 这里的测试本身有问题。
 
-[[CC-Connect + Codex - Error and Mistakes#`workspace-write` 网络：测试条件错了]] 保存了当时的完整对照记录：
+[[CC-Connect + Codex - Errors and Lessons#`workspace-write` 网络：测试条件错了]] 保存了当时的完整对照记录：
 
 ```bash
 codex sandbox -- curl -I https://example.com

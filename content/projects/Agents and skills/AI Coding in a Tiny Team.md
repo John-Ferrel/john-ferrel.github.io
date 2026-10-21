@@ -1,5 +1,5 @@
 ---
-title: AI Coding in a Tiny Team
+title: "AI Coding in a Tiny Team"
 draft: false
 tags:
   - ai
@@ -10,11 +10,11 @@ tags:
   - cc-connect
   - team-workflow
 created: 2026-08-13 23:27
-modified: 2026-08-14 00:01
+modified: 2026-10-22 00:05
+aliases:
+  - "projects/Agents and skills/AI Coding in Tiny Team"
 ---
-最近，我们在三个人的开发团队里调整了几处 coding workflow。
-
-团队共用一台开发服务器。每个人有自己的 Linux user，也各自维护一份 repo clone。团队共享数据可以由成员共同访问；个人 workspace、未提交代码和 credential 仍然保留在各自的 user space 里。
+三人开发团队共用一台开发服务器。每个人有自己的 Linux user，也各自维护一份 repo clone。团队共享数据可以由成员共同访问；个人 workspace、未提交代码和 credential 仍然保留在各自的 user space 里。
 
 下文把 workspace 作为工作目录的统称：个人 workspace 是开发者自己的 repo clone，qbot workspace 是单独 clone 出来的目录；`worktree` 指实际被修改的那份工作目录。`user space` 则指各自 Linux user 拥有的个人空间。
 

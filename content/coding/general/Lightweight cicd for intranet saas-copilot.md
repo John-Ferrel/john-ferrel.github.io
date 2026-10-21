@@ -10,17 +10,9 @@ tags:
   - saas-copilot
 draft: false
 created: 2026-05-12 22:13
-modified: 2026-07-12 00:00
+modified: 2026-10-22 00:05
 ---
-最近我给一个内网服务器部署了一个 SaaS Copilot 的 服务。
-
-一开始我的想法很简单：
-
-> 本地开发，内网服务器部署。
-
-但真正开始做之后，我发现这里其实很适合搭一套轻量 CI/CD。
-
-对于还在 MVP / demo 阶段的小服务，先把下面这条部署闭环跑通：
+内网 SaaS Copilot 服务处于 MVP / demo 阶段，采用本地开发、内网服务器部署的方式。部署流程需要覆盖代码更新、依赖同步、测试、服务重启和健康检查：
 
 ```text
 本地开发
@@ -38,13 +30,11 @@ git push
 健康检查
 ```
 
-最后我搭出来的是一套非常轻量但完整的流程：
+这套流程使用以下组件：
 
 ```text
 Git bare repo + post-receive hook + uv + pytest + systemd + /health
 ```
-
-这篇文章记录一下这次流程
 
 ---
 

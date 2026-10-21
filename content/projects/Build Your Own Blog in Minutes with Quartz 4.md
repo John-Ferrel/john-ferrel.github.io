@@ -5,10 +5,9 @@ tags:
   - blog
   - quartz
 created: 2025-12-11 22:01
-modified: 2025-12-11 22:12
+modified: 2026-10-22 00:05
 ---
-Ready to start a blog with ease? 
-Quartz 4 is the perfect tool for the job! Follow my step-by-step tutorial to build your own, or dive into the [Welcome to Quartz 4](https://quartz.jzhao.xyz/) documentation for even more features.
+Quartz 4 turns Markdown notes into a static website. This guide covers local setup and publishing a personal blog, with Obsidian as an optional editor. See the [Quartz documentation](https://quartz.jzhao.xyz/) for additional configuration options.
 
 ## 0. Before You Start
 You will need

@@ -8,7 +8,7 @@ tags:
   - self-hosting
 draft: false
 created: 2026-10-08 00:00
-modified: 2026-10-08 23:23
+modified: 2026-10-22 00:02
 ---
 
 一台 Linux 服务器可以同时运行多个 AI Bot：一个处理文书，一个阅读论文，一个负责日常对话或图片生成。通过 Telegram、飞书或微信发送任务，由 OpenCode 访问各自的工作目录并执行操作。
@@ -695,7 +695,7 @@ cc-connect daemon status
 
 特别是通过 Shell 安装的 OpenCode，交互式 SSH 能找到二进制，并不代表 systemd 服务也能找到。必要时检查服务运行用户和实际 PATH。
 
-systemd PATH 的检查方法也见 [[Ubuntu 24.04 上运行 cc-connect + Codex：PATH、Sandbox 与 Git#1. daemon 找不到 Codex]]；其中 Codex 的安装目录需要按实际 OpenCode 路径替换。
+systemd PATH 的检查方法也见 [[Running cc-connect + Codex on Ubuntu 24.04 - PATH, Sandbox, and Git#1. daemon 找不到 Codex]]；其中 Codex 的安装目录需要按实际 OpenCode 路径替换。
 
 OpenCode v2 的共享服务还需要注意端口冲突。不要让多个独立进程争用同一个后台服务端口，也不要在没有确认兼容方式的情况下同时启动多个 Runtime。
 

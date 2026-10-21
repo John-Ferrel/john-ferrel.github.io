@@ -8,17 +8,13 @@ tags:
   - rag
 draft: false
 created: 2026-06-08 23:18
-modified: 2026-07-04 00:00
+modified: 2026-10-22 00:05
 ---
-最近我在做公司的 SaaS Copilot, 需要设计知识库。最初的想法比较传统：做协同文档系统、文档处理管线，再导入 Dify 或向量数据库，供 agents / workflow 调用。
+SaaS Copilot 的知识库需要让业务同事整理资料，并经过审核后供 agents / workflow 调用。第一版 POC 使用 OpenCode Web + Git repo 跑通知识库草稿生产流程。
 
-这个方向完整，但冷启动太重。尤其要考虑业务同事的使用体验时，第一版就做“协同云文档 + 审核流 + RAG 后台”不太现实。
+OpenCode Web 提供浏览器工作台，Git 管理知识源文件，AGENTS.md / skills / commands / permissions 约束格式、流程和安全边界。审核通过的文档后续再导入 Dify 或向量库。
 
-于是我想到一个更轻的方案：
-
-> 用 OpenCode Web 作为知识库内容生产工作台，让业务同事通过浏览器整理文档；用 Git 管理知识源文件；用 AGENTS.md / skills / commands / permissions 约束格式、流程和安全边界；后续再把 approved 文档导入 Dify 或向量库
-
-这篇记录的是第一版 POC：先用 OpenCode Web + Git repo 跑通知识库草稿生产流程。
+协同文档系统、文档处理管线和 RAG 后台都需要额外建设；当前先验证草稿生产与审核流程。
 
 后续记录：[[Building KnowledgeBase with OpenCode 2 - Docker and SFTPGo]]、[[Building KnowledgeBase with OpenCode 3 - CC Connect]]。
 

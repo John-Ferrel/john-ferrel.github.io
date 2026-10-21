@@ -1,19 +1,17 @@
 ---
-title: 如何做一张好用的角色卡：从 PLists + Ali Chat 到现代 Hybrid 写法
+title: "Designing Effective Character Cards - From PLists + Ali Chat to Modern Hybrid Formats"
 draft: false
 tags:
   - ai
   - llm
 created: 2026-05-05 17:16
-modified: 2026-05-05 17:16
+modified: 2026-10-22 00:05
+aliases:
+  - "projects/prompt-engineering/如何做一张好用的角色卡：从 PLists + Ali Chat 到现代 Hybrid 写法"
 ---
-最近在研究 SillyTavern / 酒馆 AI 的角色卡写法，看到一个经典思路：[**PLists + Ali:Chat**](https://wikia.schneedc.com/bot-creation/trappu/creation)。
+[PLists + Ali:Chat](https://wikia.schneedc.com/bot-creation/trappu/creation) 将角色卡分成两部分：PLists 压缩角色设定，Ali:Chat 通过示例对话塑造角色语气。
 
-简单来说，PLists 用来压缩角色设定，Ali:Chat 用来通过示例对话塑造角色语气。这个方法以前很流行，尤其适合上下文较短、理解能力较弱的小模型。但现在模型能力更强了，角色卡的最佳写法也发生了一些变化。
-
-我的结论是：
-
-> **PLists + Ali:Chat 仍然有价值，但现在更推荐“结构化自然语言 + 少量示例对话 + Lorebook”的 Hybrid 写法。**
+在 SillyTavern / 酒馆 AI 中，我更倾向于用结构化自然语言组织设定，保留少量示例对话，再用 Lorebook 管理补充信息，形成 Hybrid 写法。下面比较这些部分的用途与取舍。
 
 ---
 

@@ -1,10 +1,12 @@
 ---
-title: Interviews Reviewing
+title: "Interview Review"
 draft: false
 tags:
   - interview
 created: 2026-02-25 19:45
-modified: 2026-02-25 19:45
+modified: 2026-10-22 00:02
+aliases:
+  - "specials/Interviews Reviewing"
 ---
 First, relax and treat the interview as a consultation where I aim to learn, understand, or delve deeper into a certain field.
 The interviewer is usually a department head or key person in charge, with broader and deeper expertise in the professional area than I (and of course, a higher salary). This is a great opportunity to recognize your shortcomings and fill in the gaps.
@@ -207,7 +209,7 @@ Why me
 
 ## 如何解决特征的多重共线性
 
-[[为什么时序预测不再强调多重共线性]]
+[[Why Multicollinearity Gets Less Attention in Time Series Forecasting]]
 
 PCA 对树模型未必是默认好选择:
 1. 降低解释性

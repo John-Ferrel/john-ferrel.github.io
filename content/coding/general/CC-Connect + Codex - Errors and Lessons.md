@@ -1,5 +1,5 @@
 ---
-title: CC-Connect + Codex - Error and Mistakes
+title: "CC-Connect + Codex - Errors and Lessons"
 draft: false
 tags:
   - ai
@@ -9,9 +9,13 @@ tags:
   - cc-connect
   - linux
 created: 2026-08-30 20:15
-modified: 2026-08-30 20:15
+modified: 2026-10-22 00:05
+aliases:
+  - "coding/general/CC-Connect + Codex - Error and Mistakes"
 ---
-最近因为 DeepSeek 涨价，我把一台远程服务器上的 Telegram coding bot 从 OpenCode 切到了 Codex。( 直接使用 openai api 在 opencode 上缓存命中似乎有问题)
+远程服务器上的 Telegram coding bot 从 OpenCode 切换到 Codex 后，需要分别处理 daemon PATH、Ubuntu sandbox 和网络访问问题。
+
+迁移的原因是 DeepSeek 涨价，以及直接在 OpenCode 中使用 OpenAI API 时观察到的疑似缓存命中问题。
 
 ```text
 Telegram → cc-connect → Codex CLI → Git repo

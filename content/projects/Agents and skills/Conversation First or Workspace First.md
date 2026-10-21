@@ -1,7 +1,7 @@
 ---
 title: Conversation First or Workspace First
 created: 2026-08-11 00:00
-modified: 2026-08-13 22:26
+modified: 2026-10-22 00:05
 tags:
   - ai
   - agent
@@ -12,18 +12,12 @@ tags:
   - im
 ---
 
-最近一直在使用 cc-connect，把 OpenCode 接到飞书等 IM 平台。
+选择 Agent Bridge 时，需要先明确工作围绕什么展开：聊天会话，还是保存规则、工具和交付物的 workspace。
 
-最初的问题很简单：
-
-> 除了 cc-connect，还有没有更合适的 Agent Bridge？
-
-我的场景主要有两个：
+我通过 cc-connect 把 OpenCode 接到飞书等 IM 平台，主要用于：
 
 1. AI Coding
 2. 企业自部署的第三方 Agent 应用
-
-一开始，我是在比较框架；后来发现，更重要的是先明确自己想解决什么问题。
 
 ## Workspace 是工作的中心
 

@@ -1,14 +1,15 @@
 ---
-title: 体验本地大模型 Ollama + Cherry Studio
+title: "Local LLMs with Ollama + Cherry Studio"
 draft: false
 tags:
   - ai
   - ollama
 created: 2026-04-12 12:16
-modified: 2026-07-12 00:00
+modified: 2026-10-22 00:05
+aliases:
+  - "Tools/体验本地大模型 Ollama + Cherry Studio"
 ---
-> 记录一次轻量的本地大模型试用：用 Ollama 运行 Qwen，再通过 Cherry Studio 聊天。  
-> 想看看普通办公电脑做总结、改写、翻译这些任务时，实际体验能不能接受。
+Ollama 在本地运行 Qwen，Cherry Studio 提供聊天界面。这套试用方案用于检查普通办公电脑能否满足总结、改写和翻译等轻量文本任务。
 ## 1. 目的
 
 给想在本地试用大模型的同事准备了一套简单方案：

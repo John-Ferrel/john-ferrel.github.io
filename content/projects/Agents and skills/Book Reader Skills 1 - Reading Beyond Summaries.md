@@ -1,5 +1,5 @@
 ---
-title: Book Reader Skills 1 读书不是总结
+title: "Book Reader Skills 1 - Reading Beyond Summaries"
 tags:
   - agent
   - skills
@@ -9,19 +9,11 @@ tags:
   - knowledge-management
 draft: false
 created: 2026-07-01 00:31
-modified: 2026-07-01 02:11
+modified: 2026-10-22 00:05
+aliases:
+  - "projects/Agents and skills/Book Reader Skills 1 读书不是总结"
 ---
-> 为什么“让 agent 读书”不能只做 summary。
-
-最近花了一些时间做 `book-reader` skills。
-
-最开始的想法很朴素：我想让 agent 帮我读书。
-
-很快发现，“读一本书”很容易被理解成：
-
-> 给我一份 summary。
-
-除了“这本书讲了什么”，我更想知道：
+`book-reader` skills 的目标是把书整理成可以继续使用的知识框架。概括“这本书讲了什么”只是其中一步，还需要回答：
 
 - 作者想解决什么问题？
 - 这本书的核心概念是怎么搭起来的？
@@ -29,8 +21,6 @@ modified: 2026-07-01 02:11
 - 哪些例子是关键支撑，哪些只是辅助说明？
 - 哪些判断来自原文，哪些是读者推断？
 - 如果以后我要继续深读，应该从哪里开始？
-
-换句话说，我想要的是一个可以继续工作的知识框架。
 
 ---
 

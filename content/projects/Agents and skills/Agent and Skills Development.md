@@ -8,15 +8,14 @@ tags:
   - skills
 draft: false
 created: 2026-06-17 23:54
-modified: 2026-07-04 00:00
+modified: 2026-10-22 00:05
 ---
-最近我开始整理公司内部的 Agent Workspace，并准备正式开发 Agent 和 Skills。
 Agent 和 Skill 是两层不同的抽象。
 
 > **Agent 负责“谁来做事”。**  
 > **Skill 负责“某类事情应该怎么做”。**
 
-再加上项目级文档、工具脚本和权限控制，一个比较完整的 Agent 系统应该是这样的：
+项目级文档、Agent、Skill、工具脚本和权限控制各有分工：
 
 ```text
 AGENTS / README / START_HERE 负责项目规则和上下文

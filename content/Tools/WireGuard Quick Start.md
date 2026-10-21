@@ -1,10 +1,12 @@
 ---
-title: wireguard 简易使用
+title: "WireGuard Quick Start"
 draft: false
 tags:
   - vpn
 created: 2026-04-16 00:19
-modified: 2026-07-12 00:00
+modified: 2026-10-22 00:02
+aliases:
+  - "Tools/Wireguard 简易使用"
 ---
 ## 快速新增一个客户端
 

@@ -1,14 +1,14 @@
 ---
-title: WSL2 突然不能用, 原因是 hypervisorlaunchtype
+title: "WSL2 Stops Working - Troubleshooting hypervisorlaunchtype"
 draft: false
 tags:
   - wsl
 created: 2026-05-04 15:15
-modified: 2026-07-12 00:00
+modified: 2026-10-22 00:05
+aliases:
+  - "coding/WSL/WSL2 突然不能用, 原因是 hypervisorlaunchtype"
 ---
-今天遇到一个很迷惑的 WSL2 问题。
-
-之前明明配置好、也一直能用 WSL，结果刚刚 VS Code 连不上 WSL。打开 PowerShell 直接报：
+原本正常使用的 WSL2 突然无法连接，VS Code 和 PowerShell 都无法启动 WSL。PowerShell 报错：
 
 ```text
 当前计算机配置不支持 WSL2。
@@ -16,9 +16,7 @@ modified: 2026-07-12 00:00
 错误代码: HCS_E_HYPERV_NOT_INSTALLED
 ```
 
-不应该啊，我之前肯定成功配置的, 只是有一段时间没用。
-
-最后查到是 Windows 的 Hypervisor 启动项被关了。
+检查发现，Windows 的 Hypervisor 启动项被关闭了。
 
 管理员 PowerShell 里检查：
 
@@ -32,7 +30,7 @@ bcdedit /enum | findstr -i hypervisorlaunchtype
 hypervisorlaunchtype    Off
 ```
 
-这就破案了。WSL2 依赖 Windows 的虚拟化层，`hypervisorlaunchtype` 被设成 `Off` 之后，Windows 启动时不会加载 Hypervisor，WSL2 自然就起不来。
+WSL2 依赖 Windows 的虚拟化层，`hypervisorlaunchtype` 被设成 `Off` 之后，Windows 启动时不会加载 Hypervisor，WSL2 自然就起不来。
 
 修复命令：
 

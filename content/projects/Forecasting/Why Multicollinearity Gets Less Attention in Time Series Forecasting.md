@@ -1,5 +1,5 @@
 ---
-title: 为什么时序预测不再强调多重共线性
+title: "Why Multicollinearity Gets Less Attention in Time Series Forecasting"
 tags:
   - machine-learning
   - time-series
@@ -9,15 +9,13 @@ tags:
   - feature-engineering
 draft: false
 created: 2026-06-26 22:12
-modified: 2026-06-26 23:11
+modified: 2026-10-22 00:05
+aliases:
+  - "projects/Forecasting/为什么时序预测不再强调多重共线性"
 ---
-我之前做线性模型和矩阵时间序列时，经常会自然地关注降维和多重共线性问题。
+多重共线性在时序预测中的影响，取决于模型如何使用特征。线性模型关注系数估计的稳定性；树模型和深度学习采用不同的拟合机制，对相关特征的处理方式也不同。
 
-比如矩阵时间序列里的 CP 分解，某种意义上和 PCA 有相似的思想：从高维、相关、噪声较强的数据中提取更低维的结构，用少数 latent factors 表达主要变化。这样可以减少冗余，也能让后续模型更稳定。
-
-但后来做机器学习时序预测，尤其是看 M5 competition 和一些零售预测、销量预测相关方法时，我发现一个变化：
-
-> 在树模型和深度学习成为主流之后，PCA 和传统多重共线性处理似乎不再是核心步骤。
+在 M5 competition 和一些零售预测方法中，PCA 和传统共线性处理较少作为核心步骤。理解这一变化，需要区分参数估计、预测效果和特征解释三个问题。
 
 ---
 

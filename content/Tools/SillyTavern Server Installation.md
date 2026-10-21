@@ -5,7 +5,7 @@ tags:
   - llm
   - server
 created: 2026-04-14 21:52
-modified: 2026-07-12 00:00
+modified: 2026-10-22 00:02
 ---
 
 **环境:Ubuntu 24.04 + WireGuard + Docker + SillyTavern**
@@ -415,7 +415,7 @@ http://10.xx.xx.1:8000
 
 ### 15.1 增加一个 WireGuard peer
 
-可以参看 [[Wireguard 简易使用#快速新增一个客户端]]
+可以参看 [[WireGuard Quick Start#快速新增一个客户端]]
 
 - 生成新的客户端密钥
 - 分配新的 VPN 地址, 例如 `10.xx.xx.3/32`
