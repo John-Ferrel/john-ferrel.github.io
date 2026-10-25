@@ -3,7 +3,7 @@ title: John Ferrel
 draft: false
 tags:
 created: 2025-12-11 22:12
-modified: 2026-10-22 00:09
+modified: 2026-10-25 22:53
 ---
 >**O God, I could be bounded in a nutshell, and count myself a king of infinite space, were it not that I have bad dreams.**
 >— William Shakespeare, _Hamlet_, Act 2, Scene 2
@@ -32,8 +32,8 @@ This site collects project notes, research questions, reading notes, and small i
 
 Small interactive experiments built with AI.
 
-- <a href="./coding/one-point.html" target="_blank" rel="noopener" data-router-ignore>One Point — A Mathematical History ↗</a>
-- <a href="./coding/星尘织梦机-Stardust-Loom.html" target="_blank" rel="noopener" data-router-ignore>星尘织梦机 · Stardust Loom ↗</a>
+- <a href="https://john-ferrel.github.io/static/interactive-lab/one-point.html" target="_blank" rel="noopener" data-router-ignore>One Point — A Mathematical History ↗</a>
+- <a href="https://john-ferrel.github.io/static/interactive-lab/星尘织梦机-Stardust-Loom.html" target="_blank" rel="noopener" data-router-ignore>星尘织梦机 · Stardust Loom ↗</a>
 
 ## Browse
 
