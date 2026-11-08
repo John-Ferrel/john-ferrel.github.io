@@ -3,7 +3,7 @@ title: John Ferrel
 draft: false
 tags:
 created: 2025-12-11 22:12
-modified: 2026-10-25 22:53
+modified: 2026-11-09 00:21
 ---
 >**O God, I could be bounded in a nutshell, and count myself a king of infinite space, were it not that I have bad dreams.**
 >— William Shakespeare, _Hamlet_, Act 2, Scene 2
@@ -25,7 +25,7 @@ This site collects project notes, research questions, reading notes, and small i
 - **AI & Agents** — [[Agent and Skills Development]] · [[AI Coding in a Tiny Team]] · [[Conversation First or Workspace First]]
 - **Knowledge Workflows** — OpenCode 知识库系列：[[Building KnowledgeBase with Opencode]] → [[Building KnowledgeBase with OpenCode 2 - Docker and SFTPGo]] → [[Building KnowledgeBase with OpenCode 3 - CC Connect]]
 - **Forecasting & Quant** — [[Forecasting Principles and Practice 3rd]] · [[freqtrade]] · [[Common Traders in Backtest]]
-- **Engineering & Tools** — [[uv Quick Start]] · [[GitFlow]] · [[WSL Command Cheat Sheet]]
+- **Engineering & Tools** — [[Training an SDXL LoRA for Game Art Assets]] · [[uv Quick Start]] · [[GitFlow]] · [[WSL Command Cheat Sheet]]
 - **Reading & Notes** — [[How to Read and Note]] · [[Book Reader Skills 1 - Reading Beyond Summaries]] · [[Book Reader Skills 2 - From Tools to Methodology]]
 
 ## Interactive Lab
